@@ -1,8 +1,8 @@
-# 🏦 HDBank Team - Banking Application ✨
+# 🏦 WAG Team - Banking Application ✨
 
 <div align="center">
   
-  ![HDBank Logo](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&duration=3000&pause=1000&color=2E86AB&center=true&vCenter=true&width=600&lines=Welcome+to+HDBank+Team!;Modern+Banking+Solution;Your+Financial+Partner;Secure+%26+Reliable+Banking)
+  ![WAG Logo](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&duration=3000&pause=1000&color=2E86AB&center=true&vCenter=true&width=600&lines=Welcome+to+HDBank+Team!;Modern+Banking+Solution;Your+Financial+Partner;Secure+%26+Reliable+Banking)
 
   <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
@@ -19,7 +19,7 @@
   <img src="https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif" width="400">
 </div>
 
-**HDBank Team** là một ứng dụng ngân hàng hiện đại được xây dựng với **Next.js** và **TypeScript**, mang đến trải nghiệm tài chính tuyệt vời cho người dùng! 🚀
+**WAG Team** là một ứng dụng ngân hàng hiện đại được xây dựng với **Next.js** và **TypeScript**, mang đến trải nghiệm tài chính tuyệt vời cho người dùng! 🚀
 
 ### ✨ Features
 
@@ -359,10 +359,10 @@ npm run test:coverage
   
   <br><br>
   
-  📧 **Email:** hdbank.team@gmail.com  
-  💬 **Discord:** HDBank Team Community  
-  📱 **Telegram:** @hdbank_support  
-  🌐 **Website:** [hdbank-team.com](https://hdbank-team.com)
+  📧 **Email:** wag.team@gmail.com  
+  💬 **Discord:** WAG Team Community  
+  📱 **Telegram:** @wagteam_support  
+  🌐 **Website:** [wag-team.com](https://hdbank-team.com)
 
 </div>
 
@@ -419,7 +419,7 @@ npm run test:coverage
   
   <br>
   
-  **🏦 Made with ❤️ by HDBank Team | 🇻🇳 Proudly Made in Vietnam**
+  **🏦 Made with ❤️ by WAG Team | 🇻🇳 Proudly Made in Vietnam**
   
   <br>
   
