@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+    <title>HDBank Internet Banking</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <link rel="shortcut icon" href="/ipc/img/HDico.ico" type="image/vnd.microsoft.icon">
+    <script>
+        function dw(str) {
+            document.writeln(str);
+        }
+    </script>
+    <script>
+        dw("<" + "SCRIPT" + " src='/ipc/js/object.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("<" + "SCRIPT" + " src='/ipc/js/control.js?ver=3.4'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("<" + "SCRIPT" + " src='/ipc/js/select.js?ver=3.2'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("<" + "SCRIPT" + " src='/ipc/js/block.js?ver=3.2'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("<" + "SCRIPT" + " src='/ipc/js/theme.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("<" + "SCRIPT" + " SRC='/ipc/js/module.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
+        dw("");
+    </script>
+    <script src="/ipc/js/object.js?ver=3.1"></script>
+    <script src="/ipc/js/control.js?ver=3.4"></script>
+    <script src="/ipc/js/select.js?ver=3.2"></script>
+    <script src="/ipc/js/block.js?ver=3.2"></script>
+    <script src="/ipc/js/theme.js?ver=3.1"></script>
+    <script src="/ipc/js/module.js?ver=3.1"></script>
+
+
+    <script>
+
+        self.CurrentUserLanguage = 'vi'
+        self.CurrentUserCountry = 'VN'
+        self.LOGIN_PAGE = 'index_vi_VN.html?ver=5.7'
+        self.MODULUS = 'be856e8c156f7f0c35aeefaab32d7a957b6afae78c692d8b96b30b8edb577dbb38b2100d6e02ff2bd76922625199e49a080c07c3eb463423e88e084951afdac15b2877cd3adc0fd01fc6c50b0de34b7a5952e4a10dbcbd791deef70f9a8011804ca668062aa74fc5f7caf3322085ba43a75b0b934090a12bcd05857aad4fc73d08864da15820e178d4cff60b10fa8a9f369e376b271b2aca35885b44b5c36eaaa92112e870d3b1aed853084f895f2e437e422449bc575c99fa196b9b149bf1ebedf26c72fed6f4e3e69d377e113e108eceb6b1ecde7d93766830f1ed98f80a5b7e336bcd1120934ee65718acd48f1409f191ef619db0404482847e78ad2dd793'
+
+        self.INDEX_PAGE = 'index.jsp';
+        self.FRAME_PAGE = 'body.html';
+        function refreshScreen() {
+            eval(self.RELOAD_JOB);
+            if (self.RELOAD_JOB != '' && document.getElementById && !document.all && !document.layers) {
+                self.location = self.getBaseHREF() + self.NETSYMBOLSDOCLOCATION + self.INDEX_PAGE;
+            }
+        }
+    </script>
+    <noscript>
+        <b>Unable to run the application for this browser does not support script. Please enable javascript and upgrade
+            your browser if necessary.</b>
+    </noscript>
+</head>
+<frameset name="mainwindow" rows="100%,*" cols="*" frameborder="NO" bordercolor="#000000" onload="self.RELOAD_JOB=''"
+    onunload="refreshScreen()">
+    <frame name="main" src="../blank.html?ver=1" noresize="" scrolling="AUTO" frameborder="NO" bordercolor="#FFFFFF">
+        <frame name="crypto" src="../crypto.html?ver=5" noresize="" scrolling="AUTO" frameborder="NO"
+            bordercolor="#FFFFFF">
+</frameset>
+<noframes></noframes>
+
+
+</html>
