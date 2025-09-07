@@ -1,0 +1,28 @@
+.page-banner {
+    width: 100%;
+    position: relative;
+}
+
+.page-banner .swiper {
+    width: 100%;
+    height: 700px;
+}
+
+.page-banner .swiper-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.page-banner .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+
+@media (max-width: 768px) {
+    .page-banner .swiper {
+        height: 280px;
+    }
+}

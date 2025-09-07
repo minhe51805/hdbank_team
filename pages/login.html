@@ -1,65 +1,292 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 
 <head>
-    <title>HDBank Internet Banking</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Cache-Control" content="no-cache">
-    <meta http-equiv="Pragma" content="no-cache">
-    <link rel="shortcut icon" href="/ipc/img/HDico.ico" type="image/vnd.microsoft.icon">
-    <script>
-        function dw(str) {
-            document.writeln(str);
-        }
-    </script>
-    <script>
-        dw("<" + "SCRIPT" + " src='/ipc/js/object.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("<" + "SCRIPT" + " src='/ipc/js/control.js?ver=3.4'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("<" + "SCRIPT" + " src='/ipc/js/select.js?ver=3.2'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("<" + "SCRIPT" + " src='/ipc/js/block.js?ver=3.2'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("<" + "SCRIPT" + " src='/ipc/js/theme.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("<" + "SCRIPT" + " SRC='/ipc/js/module.js?ver=3.1'" + ">" + "<" + "/" + "SCRIPT" + ">");
-        dw("");
-    </script>
-    <script src="/ipc/js/object.js?ver=3.1"></script>
-    <script src="/ipc/js/control.js?ver=3.4"></script>
-    <script src="/ipc/js/select.js?ver=3.2"></script>
-    <script src="/ipc/js/block.js?ver=3.2"></script>
-    <script src="/ipc/js/theme.js?ver=3.1"></script>
-    <script src="/ipc/js/module.js?ver=3.1"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDBank eBanking</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/plugin.min.css" as="style">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/core.css" as="style">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/linearicons.css" as="style">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/material.css" as="style">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/font-be-vietnam.css" as="style">
+    <link rel="preload stylesheet" crossorigin="anonymous" href="/assets/css/font-be-vietnam-pro.css" as="style">
+    <link rel="preload" href="/assets/css/0b0dca423a4b909f.css" as="style">
+    <link rel="stylesheet" href="/assets/css/0b0dca423a4b909f.css" data-n-g="">
+    <link rel="preload" href="/assets/css/92592c3bbcf82809.css" as="style">
+    <link rel="stylesheet" href="/assets/css/92592c3bbcf82809.css" data-n-p=""><noscript data-n-css=""></noscript>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
-    <script>
-
-        self.CurrentUserLanguage = 'vi'
-        self.CurrentUserCountry = 'VN'
-        self.LOGIN_PAGE = 'index_vi_VN.html?ver=5.7'
-        self.MODULUS = 'be856e8c156f7f0c35aeefaab32d7a957b6afae78c692d8b96b30b8edb577dbb38b2100d6e02ff2bd76922625199e49a080c07c3eb463423e88e084951afdac15b2877cd3adc0fd01fc6c50b0de34b7a5952e4a10dbcbd791deef70f9a8011804ca668062aa74fc5f7caf3322085ba43a75b0b934090a12bcd05857aad4fc73d08864da15820e178d4cff60b10fa8a9f369e376b271b2aca35885b44b5c36eaaa92112e870d3b1aed853084f895f2e437e422449bc575c99fa196b9b149bf1ebedf26c72fed6f4e3e69d377e113e108eceb6b1ecde7d93766830f1ed98f80a5b7e336bcd1120934ee65718acd48f1409f191ef619db0404482847e78ad2dd793'
-
-        self.INDEX_PAGE = 'index.jsp';
-        self.FRAME_PAGE = 'body.html';
-        function refreshScreen() {
-            eval(self.RELOAD_JOB);
-            if (self.RELOAD_JOB != '' && document.getElementById && !document.all && !document.layers) {
-                self.location = self.getBaseHREF() + self.NETSYMBOLSDOCLOCATION + self.INDEX_PAGE;
-            }
-        }
-    </script>
-    <noscript>
-        <b>Unable to run the application for this browser does not support script. Please enable javascript and upgrade
-            your browser if necessary.</b>
-    </noscript>
 </head>
-<frameset name="mainwindow" rows="100%,*" cols="*" frameborder="NO" bordercolor="#000000" onload="self.RELOAD_JOB=''"
-    onunload="refreshScreen()">
-    <frame name="main" src="../blank.html?ver=1" noresize="" scrolling="AUTO" frameborder="NO" bordercolor="#FFFFFF">
-        <frame name="crypto" src="../crypto.html?ver=5" noresize="" scrolling="AUTO" frameborder="NO"
-            bordercolor="#FFFFFF">
-</frameset>
-<noframes></noframes>
 
+<body>
+    <!-- Header -->
+    <header class="hdbank-header d-flex align-items-center px-3">
+
+        <button class="btn border-0 bg-transparent me-2" style="font-size:2rem;"><i class="fas fa-bars"></i></button>
+        <div class="hdbank-logo">
+            <a href="/"><img src="https://cdn.hdbank.com.vn/hdbank-file/picture/logo_1645778839158.png"
+                    alt="HDBank"></a>
+        </div>
+        <div class="lang-select ms-auto me-3">
+            <select>
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <img src="https://ebanking.hdbank.vn/ipc/img/login/nhdt_desk.jpg" alt="Happy Digital Bank"
+                    class="main-img shadow-sm">
+            </div>
+        </div>
+        <div class="row mt-4 g-4">
+            <!-- Features -->
+            <div class="col-lg-6">
+                <h5 class="text-center fw-bold mb-3">Khám phá tiện ích eBanking</h5>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#ff4b4b;"><i class="fas fa-file-invoice"></i></div>
+                        <div class="feature-title">Hoá đơn</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#ff6f00;"><i class="fas fa-piggy-bank"></i></div>
+                        <div class="feature-title">Gửi tiết kiệm online</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#8e24aa;"><i class="fas fa-lock"></i></div>
+                        <div class="feature-title">Khoá thẻ tạm thời</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#00bcd4;"><i class="fas fa-exchange-alt"></i></div>
+                        <div class="feature-title">Chuyển tiền nhanh 24/7</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#00bfae;"><i class="fas fa-sms"></i></div>
+                        <div class="feature-title">SMS Banking</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#aed581;"><i class="fas fa-building"></i></div>
+                        <div class="feature-title">eFactoring</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#ff9800;"><i class="fas fa-credit-card"></i></div>
+                        <div class="feature-title">eCredit</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#e040fb;"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="feature-title">eDrawdown</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="color:#ffd600;"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="feature-title">eFEX</div>
+                    </div>
+                </div>
+                <div class="footer-links mt-4">
+                    <a href="#">Đăng ký sử dụng</a>
+                    <a href="#">Điều khoản &amp; điều kiện</a>
+                </div>
+            </div>
+            <!-- Login Box -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="login-box w-100">
+                    <h5 class="fw-bold text-center mb-3">Đăng nhập eBanking</h5>
+
+                    <!-- Tabs -->
+                    <div class="login-tabs d-flex mb-3">
+                        <button class="tab-btn active me-2" type="button">Cá nhân</button>
+                        <button class="tab-btn" type="button">Doanh nghiệp</button>
+                    </div>
+
+                    <!-- Form -->
+                    <form>
+                        <div class="mb-3">
+                            <div class="input-group-custom">
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Tên đăng nhập" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group-custom">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" placeholder="Mật khẩu" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn-login w-100">
+                                <i class="fas fa-arrow-right me-2"></i> Đăng nhập
+                            </button>
+                        </div>
+
+
+                        <div class="login-help text-center mb-3">
+                            <a href="#">Bạn không thể đăng nhập ?</a>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="button" class="btn-register">
+                                <i class="fas fa-user-plus me-2"></i> Tạo tài khoản ngay
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <footer>
+        <div class="footer__logo__arrow"><img alt="HDBank" src="/assets/images/icons/upTop.svg"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-12">
+                    <div class="infor-box"><a class="logo-footer" href="/vi"><img alt="HDBank"
+                                src="https://cdn.hdbank.com.vn/hdbank-file/picture/logo_1645778839158.png"></a>
+                        <ul>
+                            <li><img alt="HDBank" src="/assets/images/icons/location.svg">25Bis Nguyễn Thị Minh
+                                Khai, P.Bến Nghé, Quận 1, TP Hồ Chí Minh</li>
+                            <li><img alt="HDBank" src="/assets/images/icons/phone.svg"><a
+                                    href="tel:19006060">19006060</a>
+                            </li>
+                            <li><img alt="HDBank" src="/assets/images/icons/email.svg"><a
+                                    href="mailto:info@hdbank.com.vn">info@hdbank.com.vn</a></li>
+                            <li>Fax: <!-- -->(028) 62 915 900</li>
+                            <li>SWIFT code: <!-- -->HDBCVNVX</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-12">
+                    <div class="menu-box d-flex">
+                        <div class="menu-list">
+                            <div class="footer-infor_tile"><span>Vì sao chọn HDBank?</span></div>
+                            <div class="styles_collapse__Yq_i8 styles_entered__cavQj" style="min-height: 0px;">
+                                <div class="styles_wrapper__y_KQV">
+                                    <div class="styles_wrapperInner__DTyng">
+                                        <ul>
+                                            <li><a href="/vi/about">Về chúng tôi</a></li>
+                                            <li><a href="https://career.hdbank.com.vn/">Tuyển dụng</a></li>
+                                            <li><a href="/vi/news">Tin tức và sự kiện</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-list">
+                            <div class="footer-infor_tile"><span>Khách hàng cá nhân</span></div>
+                            <div class="styles_collapse__Yq_i8 styles_entered__cavQj" style="min-height: 0px;">
+                                <div class="styles_wrapper__y_KQV">
+                                    <div class="styles_wrapperInner__DTyng">
+                                        <ul>
+                                            <li><a href="/vi/personal/product/ngan-hang-dien-tu">Ngân hàng điện
+                                                    tử</a></li>
+                                            <li><a href="/vi/personal/product/san-pham-vay">Sản phẩm vay</a>
+                                            </li>
+                                            <li><a href="/vi/personal/product/the">Thẻ</a></li>
+                                            <li><a href="/vi/personal/product/dich-vu-kieu-hoi">Dịch vụ kiều
+                                                    hối</a></li>
+                                            <li><a href="/vi/personal/product/san-pham-tien-gui">Sản phẩm tiền
+                                                    gửi</a></li>
+                                            <li><a href="/vi/personal/product/san-pham-dich-vu">Sản phẩm dịch
+                                                    vụ</a></li>
+                                            <li><a href="/vi/personal/product/bao-hiem">Bảo hiểm</a></li>
+                                            <li><a href="/vi/personal/product/ngoai-te">Ngoại tệ</a></li>
+                                            <li><a href="/vi/personal/promotion">Ưu đãi</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-list">
+                            <div class="footer-infor_tile"><span>Khách hàng doanh nghiệp</span></div>
+                            <div class="styles_collapse__Yq_i8 styles_entered__cavQj" style="min-height: 0px;">
+                                <div class="styles_wrapper__y_KQV">
+                                    <div class="styles_wrapperInner__DTyng">
+                                        <ul>
+                                            <li><a href="/vi/corporate/product/ngoai-te-phai-sinh">Ngoại tệ
+                                                    &amp; Phái sinh</a></li>
+                                            <li><a href="/vi/corporate/product/tai-tro-thuong-mai">Tài trợ
+                                                    thương mại </a></li>
+                                            <li><a href="/vi/corporate/product/tin-dung">Tín dụng</a></li>
+                                            <li><a href="/vi/corporate/product/quan-ly-dong-tien">Quản lý dòng
+                                                    tiền</a></li>
+                                            <li><a href="/vi/corporate/promotion">Ưu đãi</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-list">
+                            <div class="footer-infor_tile"><span>Hỗ trợ</span></div>
+                            <div class="styles_collapse__Yq_i8 styles_entered__cavQj" style="min-height: 0px;">
+                                <div class="styles_wrapper__y_KQV">
+                                    <div class="styles_wrapperInner__DTyng">
+                                        <ul>
+                                            <li><a href="/vi/atm-branch">Chi nhánh/ATM</a></li>
+                                            <li><a href="https://env.hdbank.com.vn/searchs.html">e-Invoice</a>
+                                            </li>
+                                            <li><a href="/vi/personal/cong-cu">Công cụ - Tiện ích</a></li>
+                                            <li><a href="/vi/personal/QnA">Câu hỏi thường gặp</a></li>
+                                            <li><a href="/vi/contact">Liên hệ</a></li>
+                                            <li><a href="https://online.hdbank.com.vn/trasoat">Tra soát - Khiếu
+                                                    nại</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-coppyright">
+                <ul class="coppyright d-flex">
+                    <li>
+                        <p>Bản quyền © 2023 thuộc về HDBank</p>
+                    </li>
+                    <li><a href="/vi/term">Điều khoản sử dụng</a></li>
+                    <li><a href="/vi/sitemap">Sơ đồ trang</a></li>
+                </ul>
+            </div>
+            <div class="footer-bottom d-flex justify-between">
+                <div class="download-app"><span>Tải app HDBank</span>
+                    <div class="qr-code d-flex align-center"><img src="/assets/images/QRcode.png" alt="hdbank-qr-code">
+                        <ul>
+                            <li> <a target="_blank"
+                                    href="https://play.google.com/store/apps/details?id=com.vnpay.hdbank"><img
+                                        alt="HDBank" src="/assets/images/chplay.png"></a></li>
+                            <li> <a target="_blank" href="https://itunes.apple.com/vn/app/hdbank/id1461658565?mt=8"><img
+                                        alt="HDBank" src="/assets/images/appstore.png"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="socail-box"> <span>Kết nối với HDBank</span>
+                    <div class="desktop">
+                        <ul class="d-flex align-center">
+                            <li> <a target="_blank" href="https://www.facebook.com/hdbankfanpage/"> <img alt="HDBank"
+                                        src="/assets/images/icons/face.png"></a></li>
+                            <li> <a target="_blank" href="https://zalo.me/1148028551726591727"><img alt="HDBank"
+                                        src="/assets/images/icons/zalo.png"></a></li>
+                            <li> <a target="_blank" href="https://www.tiktok.com/@hdbankofficial"> <img alt="HDBank"
+                                        src="/assets/images/icons/titok.png"></a></li>
+                            <li> <a target="_blank" href="https://www.youtube.com/c/HDBankOfficial"> <img alt="HDBank"
+                                        src="/assets/images/icons/youtube.png"></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="coppyright">
+                        <p>Bản quyền © 2023 thuộc về HDBank</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
 
 </html>
