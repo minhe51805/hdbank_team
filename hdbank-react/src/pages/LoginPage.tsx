@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+  
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -11,6 +15,14 @@ const LoginPage: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/vi');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -42,13 +54,41 @@ const LoginPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (validateForm()) {
-      // TODO: Implement actual login logic
-      console.log('Login attempt:', formData);
-      alert('Chức năng đăng nhập đang được phát triển...');
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      await login(formData.username, formData.password);
+      
+      // Navigation will be handled by useEffect after authentication
+      console.log('✅ Login successful, redirecting...');
+      
+    } catch (error: any) {
+      console.error('❌ Login failed:', error.message);
+      
+      // Set appropriate error message
+      if (error.message.includes('đăng nhập') || error.message.includes('mật khẩu')) {
+        setErrors({ 
+          general: error.message
+        });
+      } else if (error.message.includes('khóa')) {
+        setErrors({ 
+          general: error.message
+        });
+      } else {
+        setErrors({ 
+          general: 'Không thể kết nối đến server. Vui lòng thử lại sau.'
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -141,8 +181,19 @@ const LoginPage: React.FC = () => {
                 </Link>
               </div>
 
-              <button type="submit" className="login-btn">
-                Đăng nhập
+              <button 
+                type="submit" 
+                className={`login-btn ${isSubmitting ? 'loading' : ''}`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner"></span>
+                    Đang đăng nhập...
+                  </>
+                ) : (
+                  'Đăng nhập'
+                )}
               </button>
 
               <div className="login-divider">
