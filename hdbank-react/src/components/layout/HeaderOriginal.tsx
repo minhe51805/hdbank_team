@@ -73,38 +73,45 @@ const HeaderOriginal: React.FC = () => {
                   </button>
                 </div>
               </form>
-              <div className="searchIcon" onClick={toggleSearch}>
+              {/* <div className="searchIcon" onClick={toggleSearch}>
                 <img alt="" src="/assets/images/icons/search.png" />
-              </div>
+              </div> */}
             </div>
 
-            {/* Login/Register Buttons */}
-            <button className="register" id="nav-eb-login" type="button">
-              <p>Đăng nhập</p>
-            </button>
-            <button className="login" id="nav-eb-register">
-              <p>Đăng ký</p>
-            </button>
+            {/* Right side elements */}
+            <div className="header-right">
+              {/* Login/Register Buttons */}
+              <Link to="/login">
+                <button className="register" id="nav-eb-login" type="button">
+                  <p>Đăng nhập</p>
+                </button>
+              </Link>
+              <Link to="/register">
+                <button className="login" id="nav-eb-register" type="button">
+                  <p>Đăng ký</p>
+                </button>
+              </Link>
 
-            {/* Language Dropdown */}
-            <div className="dropdown">
-              <button className="btn dropdown-toggle">
-                <img alt="" src="/assets/images/icons/vn.png" />
-              </button>
-              <ul className="dropdown-menu">
-                <li className="dropdown-item">
-                  <div className="flag">
-                    <img alt="" src="/assets/images/icons/en.png" />
-                    <span>English</span>
-                  </div>
-                </li>
-                <li className="dropdown-item">
-                  <div className="flag">
-                    <img alt="" src="/assets/images/icons/jp.png" />
-                    <span>日本</span>
-                  </div>
-                </li>
-              </ul>
+              {/* Language Dropdown */}
+              <div className="dropdown">
+                <button className="btn dropdown-toggle">
+                  <img alt="" src="/assets/images/icons/vn.png" />
+                </button>
+                <ul className="dropdown-menu">
+                  <li className="dropdown-item">
+                    <div className="flag">
+                      <img alt="" src="/assets/images/icons/en.png" />
+                      <span>English</span>
+                    </div>
+                  </li>
+                  <li className="dropdown-item">
+                    <div className="flag">
+                      <img alt="" src="/assets/images/icons/jp.png" />
+                      <span>日本</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -138,6 +145,9 @@ const HeaderOriginal: React.FC = () => {
 
           <div className="srcoll-bar">
             <div className="login">
+              <Link className="btn-login" to="/login">
+                <p>Đăng nhập</p>
+              </Link>
               <Link className="btn-login" to="/register">
                 <p>Đăng ký</p>
               </Link>
