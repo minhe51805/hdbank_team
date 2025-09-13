@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './LoginPage.css';
+import { loginApi } from '../utils';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,6 +67,17 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(formData.username, formData.password);
+      
+      // Get user data from AuthContext after successful login
+      const userData = JSON.parse(localStorage.getItem('hdbank_user') || '{}');
+      if (userData.customerId) {
+        localStorage.setItem('customerId', String(userData.customerId));
+        localStorage.setItem('username', String(userData.username));
+        localStorage.setItem('forcePromo','1');
+        console.log('✅ CustomerId stored:', userData.customerId);
+      } else {
+        console.warn('⚠️ No customerId found in user data');
+      }
       
       // Navigation will be handled by useEffect after authentication
       console.log('✅ Login successful, redirecting...');
@@ -163,6 +175,8 @@ const LoginPage: React.FC = () => {
                 </div>
                 {errors.password && <span className="error-message">{errors.password}</span>}
               </div>
+
+              {errors.general && <div className="error-message general-error">{errors.general}</div>}
 
               <div className="form-options">
                 <label className="checkbox-label">

@@ -4,6 +4,8 @@
 export const ChatConfig = {
   // n8n webhook URL from New folder project
   N8N_CHAT_URL: process.env.REACT_APP_N8N_CHAT_URL || 'https://laptop-jfecre1c.tail0882b7.ts.net/webhook/2c709ae7-230d-442a-9424-bbcbb8c2bdb0/chat',
+  // Notebook FastAPI base URL (CashyBear API)
+  NOTEBOOK_API_URL: process.env.REACT_APP_NOTEBOOK_API_URL || 'http://127.0.0.1:8010',
   
   // App settings
   APP_NAME: 'HDBank_ChatBot',

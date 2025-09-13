@@ -9,6 +9,36 @@ const HeaderOriginal: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   const { user, isAuthenticated, logout } = useAuth();
+  
+  // Get fallback data from localStorage if user object not ready
+  const fallbackUser = React.useMemo(() => {
+    if (user) return user;
+    
+    const storedUser = localStorage.getItem('hdbank_user');
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Failed to parse stored user:', e);
+      }
+    }
+    
+    const customerId = localStorage.getItem('customerId');
+    const username = localStorage.getItem('username');
+    if (customerId && username) {
+      return { username, customerId: parseInt(customerId), segment: 'family', age: 35 };
+    }
+    
+    return null;
+  }, [user]);
+
+  // Debug authentication state
+  console.log('🔍 Header Auth State:', { 
+    isAuthenticated, 
+    user: user ? { username: user.username, segment: user.segment, age: user.age } : null,
+    fallbackUser: fallbackUser ? { username: fallbackUser.username, segment: fallbackUser.segment } : null,
+    hasToken: !!localStorage.getItem('hdbank_token')
+  });
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -17,6 +47,25 @@ const HeaderOriginal: React.FC = () => {
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
   };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+  };
+
+  // Close search when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (searchOpen && !target.closest('.search-box')) {
+        setSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchOpen]);
 
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
@@ -35,7 +84,7 @@ const HeaderOriginal: React.FC = () => {
     <div className="nav-top">
       <nav>
         <div className="container">
-          <div className="nav-full d-flex align-center">
+          <div className={`nav-full d-flex align-center ${searchOpen ? 'search-active' : ''}`}>
             {/* Mobile menu toggle */}
             <div className="btn btn-toggle" id="toggle" onClick={toggleMobileMenu}>
               <span className="btn-burger-icon"></span>
@@ -73,6 +122,12 @@ const HeaderOriginal: React.FC = () => {
 
             {/* Search Box */}
             <div className={`search-box ${searchOpen ? 'active' : ''}`} id="header-nav-top">
+              {!searchOpen && (
+                <button className="search-trigger" onClick={toggleSearch}>
+                  <img alt="" src="/assets/images/icons/search.png" />
+                </button>
+              )}
+              {searchOpen && (
               <form className="searchform" id="searchform" action="" method="post">
                 <div className="form-group">
                   <input 
@@ -82,7 +137,7 @@ const HeaderOriginal: React.FC = () => {
                     name="inputSearch" 
                     placeholder="Nhập từ khóa tìm kiếm..." 
                   />
-                  <div className="close" onClick={toggleSearch}>
+                  <div className="close" onClick={closeSearch}>
                     <img src="/assets/images/icons/close.png" alt="close" />
                   </div>
                   <button type="submit">
@@ -90,19 +145,23 @@ const HeaderOriginal: React.FC = () => {
                   </button>
                 </div>
               </form>
-              {/* <div className="searchIcon" onClick={toggleSearch}>
-                <img alt="" src="/assets/images/icons/search.png" />
-              </div> */}
+              )}
             </div>
 
             {/* Right side elements */}
             <div className="header-right">
               {/* Authenticated User Menu or Login/Register Buttons */}
-              {isAuthenticated && user ? (
+              {(isAuthenticated && user) || localStorage.getItem('hdbank_token') ? (
                 <div className="user-menu">
                   <button className="user-btn" onClick={toggleUserMenu}>
+                    <div className="user-avatar">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
                     <span className="user-greeting">
-                      Xin chào, {user.username}
+                      {fallbackUser?.username || 'Khách hàng'}
                     </span>
                     <svg className={`user-arrow ${isUserMenuOpen ? 'open' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M6 9l6 6 6-6"/>
@@ -112,8 +171,18 @@ const HeaderOriginal: React.FC = () => {
                   {isUserMenuOpen && (
                     <div className="user-dropdown">
                       <div className="user-info">
-                        <div className="user-name">{user.username}</div>
-                        <div className="user-segment">{user.segment} • {user.age} tuổi</div>
+                        <div className="user-name">{fallbackUser?.username || 'Khách hàng'}</div>
+                        <div className="user-segment">
+                          {fallbackUser?.segment ? 
+                            `${fallbackUser.segment} ${fallbackUser.age ? `• ${fallbackUser.age} tuổi` : ''}` : 
+                            'Khách hàng HDBank'
+                          }
+                        </div>
+                        {fallbackUser?.balance && (
+                          <div className="user-balance">
+                            Số dư: {new Intl.NumberFormat('vi-VN').format(fallbackUser.balance)} VNĐ
+                          </div>
+                        )}
                       </div>
                       <div className="user-actions">
                         <Link to="/profile" className="user-action">

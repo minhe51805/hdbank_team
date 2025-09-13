@@ -20,30 +20,30 @@ interface BankingPersonality {
 
 const bankingPersonalities: BankingPersonality[] = [
   {
-    id: "advisor",
-    name: "Chuyên viên tư vấn",
-    description: "Tư vấn sản phẩm ngân hàng chuyên nghiệp",
-    prompt: "Bạn là chuyên viên tư vấn ngân hàng HDBank chuyên nghiệp. Hãy tư vấn các sản phẩm như vay, tiết kiệm, thẻ tín dụng một cách chi tiết và chính xác. Sử dụng ngôn ngữ chuyên nghiệp nhưng thân thiện.",
-    initialMessage: "Xin chào! Tôi là chuyên viên tư vấn HDBank. Tôi sẵn sàng hỗ trợ bạn về các sản phẩm vay, tiết kiệm, thẻ tín dụng và dịch vụ ngân hàng. Bạn cần tư vấn gì ạ?",
-    emoji: "👨‍💼",
+    id: "mentor",
+    name: "Mentor",
+    description: "Lịch sự, chuyên nghiệp, giải thích từng bước rõ ràng",
+    prompt: "Bạn là CashyBear – Gấu nhắc tiết kiệm, ví bạn thêm xịn. Phong cách Mentor: lịch sự, chuyên nghiệp, giải thích từng bước rõ ràng, định hướng hành động.",
+    initialMessage: "Chào bạn! Mình là CashyBear (Mentor). Bạn muốn đặt mục tiêu tiết kiệm nào để mình cùng lên kế hoạch 7/14 ngày trước nhé?",
+    emoji: "🧠",
     color: "#be1128"
   },
   {
-    id: "support",
-    name: "Hỗ trợ khách hàng",
-    description: "Giải đáp thắc mắc và hướng dẫn sử dụng",
-    prompt: "Bạn là nhân viên hỗ trợ khách hàng HDBank. Hãy giải đáp các thắc mắc về internet banking, mobile banking, ATM và các dịch vụ ngân hàng. Luôn nhiệt tình và kiên nhẫn.",
-    initialMessage: "Chào bạn! Tôi là bộ phận hỗ trợ khách hàng HDBank. Tôi có thể giúp bạn về internet banking, mobile app, ATM, và các dịch vụ khác. Bạn gặp vấn đề gì cần hỗ trợ?",
-    emoji: "🛠️",
+    id: "angry_mom",
+    name: "Angry Mom",
+    description: "Nghiêm khắc, càu nhàu nhưng quan tâm, bảo vệ ví",
+    prompt: "Bạn là CashyBear – phong cách Angry Mom: thẳng, càu nhàu nhưng quan tâm; mục tiêu là bảo vệ ví người dùng.",
+    initialMessage: "Vào việc nhé! Cho mình biết mục tiêu và thời gian, mình chốt cho bạn kế hoạch 7/14 ngày trước, làm được thì đi tiếp.",
+    emoji: "🧹",
     color: "#2563eb"
   },
   {
-    id: "friendly",
-    name: "Trợ lý thân thiện",
-    description: "Tư vấn gần gụi như người bạn",
-    prompt: "Bạn là trợ lý HDBank thân thiện và gần gụi. Hãy tư vấn theo cách gần gụi, dễ hiểu như một người bạn am hiểu về tài chính. Sử dụng ngôn ngữ đời thường nhưng vẫn chính xác.",
-    initialMessage: "Hi bạn! Mình là trợ lý HDBank đây! 😊 Mình có thể giúp bạn tìm hiểu về các sản phẩm tài chính, cách tiết kiệm hay đầu tư thông minh. Bạn muốn tâm sự gì về tiền bạc không?",
-    emoji: "😊",
+    id: "banter",
+    name: "Banter",
+    description: "Gen Z vui vẻ, trêu nhẹ, emoji vừa đủ",
+    prompt: "Bạn là CashyBear – phong cách Banter: thân thiện, hài hước, trêu nhẹ để khích lệ thay đổi thói quen tiền bạc.",
+    initialMessage: "Hello bạn! CashyBear đây 😎 Cho mình biết mục tiêu tiền bạc của bạn nè, lên plan 7/14 ngày trước cho gọn.",
+    emoji: "😄",
     color: "#16a34a"
   }
 ];
@@ -154,6 +154,33 @@ const ChatBot: React.FC = () => {
   async function send() {
     const text = input.trim();
     if (!text || busy) return;
+    
+    // Check authentication from multiple sources
+    const customerId = localStorage.getItem('customerId');
+    const hdBankUser = localStorage.getItem('hdbank_user');
+    const hdBankToken = localStorage.getItem('hdbank_token');
+    
+    console.log('🔍 Authentication check:', { customerId, hasUser: !!hdBankUser, hasToken: !!hdBankToken });
+    
+    if (!customerId && !hdBankUser) {
+      alert('Vui lòng đăng nhập trước khi chat để mình đọc đúng dữ liệu của bạn.');
+      return;
+    }
+    
+    // If no customerId but has user data, try to extract it
+    let finalCustomerId = customerId;
+    if (!finalCustomerId && hdBankUser) {
+      try {
+        const userData = JSON.parse(hdBankUser);
+        finalCustomerId = userData.customerId || userData.id;
+        if (finalCustomerId) {
+          localStorage.setItem('customerId', String(finalCustomerId));
+          console.log('✅ CustomerId extracted from user data:', finalCustomerId);
+        }
+      } catch (e) {
+        console.error('❌ Failed to parse user data:', e);
+      }
+    }
     setInput("");
     const userMessageIndex = messages.length;
     const aiMessageIndex = userMessageIndex + 1;
@@ -172,7 +199,8 @@ const ChatBot: React.FC = () => {
         personalityPrompt: selectedPersonality?.prompt,
         metadata: {
           personality: selectedPersonality?.id,
-          personalityName: selectedPersonality?.name
+          personalityName: selectedPersonality?.name,
+          customerId: finalCustomerId
         }
       });
 
@@ -210,6 +238,8 @@ const ChatBot: React.FC = () => {
 
   const selectPersonality = (personality: BankingPersonality) => {
     setSelectedPersonality(personality);
+    // Reset session when switching persona to ensure clean server-side state
+    setSessionId(crypto.randomUUID());
     setMessages([{ 
       role: "assistant", 
       content: personality.initialMessage, 
