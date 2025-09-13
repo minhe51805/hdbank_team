@@ -3,7 +3,7 @@
 
 import ChatConfig from '../config/chatConfig';
 
-const N8N_CHAT_URL = ChatConfig.N8N_CHAT_URL;
+const NOTEBOOK_API = ChatConfig.NOTEBOOK_API_URL;
 
 interface ChatRequest {
   message: string;
@@ -26,21 +26,16 @@ export class ChatAPI {
   static async sendMessage(request: ChatRequest): Promise<string> {
     try {
       const payload = {
+        customerId: Number((request.metadata as any)?.customerId || 0),
+        persona: String((request.metadata as any)?.personalityName || 'Mentor'),
+        sessionId: String(request.sessionId || ''),
         message: request.message || "",
-        sessionId: request.sessionId || crypto.randomUUID(),
-        userId: request.userId || "hdbank-web-user",
-        metadata: {
-          source: "hdbank-react",
-          personalityPrompt: request.personalityPrompt,
-          platform: "web",
-          timestamp: new Date().toISOString(),
-          ...request.metadata
-        },
+        // history được lưu ở server theo sessionId, không gửi từ FE để tránh lệch state
       };
 
-      console.log('Sending to n8n:', payload);
+      console.log('Sending to CashyBear API:', payload);
 
-      const response = await fetch(N8N_CHAT_URL, {
+      const response = await fetch(`${NOTEBOOK_API}/chat/reply`, {
         method: "POST",
         headers: { 
           "content-type": "application/json",
@@ -52,31 +47,13 @@ export class ChatAPI {
       const text = await response.text();
       console.log('n8n raw response:', text);
 
-      let data: ChatResponse;
+      let reply = text;
       try {
-        data = JSON.parse(text);
-      } catch {
-        // If not JSON, treat as plain text response
-        return text || "Đã nhận được phản hồi từ HDBank AI.";
-      }
+        const data = JSON.parse(text);
+        reply = data?.reply ?? reply;
+      } catch {}
 
-      // Parse n8n response format
-      let reply: string;
-      if (data?.output) {
-        reply = data.output;
-      } else if (data?.reply) {
-        reply = data.reply;
-      } else if (data?.message) {
-        reply = data.message;
-      } else if (data?.result) {
-        reply = data.result;
-      } else if (data?.error) {
-        throw new Error(data.error + (data.detail ? `: ${data.detail}` : ''));
-      } else {
-        reply = "Cảm ơn bạn đã liên hệ HDBank. Tôi đã nhận được tin nhắn của bạn.";
-      }
-
-      return String(reply);
+      return String(reply || "Đã nhận được phản hồi từ CashyBear.");
 
     } catch (error: any) {
       console.error('ChatAPI Error:', error);
@@ -97,15 +74,10 @@ export class ChatAPI {
   // Test connection to n8n
   static async testConnection(): Promise<boolean> {
     try {
-      const response = await this.sendMessage({
-        message: "test connection",
-        sessionId: "test-session-" + Date.now(),
-        userId: "test-user",
-        personalityPrompt: "Just respond with 'connection ok'"
-      });
-      
-      console.log('Connection test response:', response);
-      return true;
+      const res = await fetch(`${NOTEBOOK_API}/health`);
+      const ok = res.ok;
+      console.log('Connection test response:', ok);
+      return ok;
     } catch (error) {
       console.error('Connection test failed:', error);
       return false;

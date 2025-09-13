@@ -5,8 +5,28 @@ import Services from '../components/sections/Services';
 import ProductSlider from '../components/sections/ProductSlider';
 import ChatBot from '../components/ui/ChatBot';
 import './HomePage.css';
+import { fetchOffer } from '../utils/promoAPI';
+import NotificationToast from '../components/ui/NotificationToast';
 
 const HomePage: React.FC = () => {
+  const [toast, setToast] = React.useState<{ title: string; lines: string[]; timeoutMs?: number } | null>(null);
+
+  React.useEffect(() => {
+    const cid = Number(localStorage.getItem('customerId') || '0');
+    if (!cid) return;
+    const key = `promoShown:2025-08:${cid}`;
+    const force = localStorage.getItem('forcePromo') === '1';
+    if (localStorage.getItem(key) && !force) return;
+
+    fetchOffer(cid, 0.6).then(res => {
+      if (res.shouldNotify && res.message) {
+        setToast({ title: res.message.title, lines: res.message.lines, timeoutMs: res.message.timeoutMs });
+        localStorage.setItem(key, '1');
+        localStorage.removeItem('forcePromo');
+      }
+    }).catch(() => {});
+  }, []);
+
   return (
     <div className="home-page">
       {/* Marquee Promotion - Vị trí trên cùng */}
@@ -179,6 +199,11 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Notification Toast */}
+      {toast && (
+        <NotificationToast title={toast.title} lines={toast.lines} timeoutMs={toast.timeoutMs} position="topRight" offsetTop={96} onClose={() => setToast(null)} />
+      )}
 
       {/* HDBank ChatBot */}
       <ChatBot />

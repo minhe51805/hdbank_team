@@ -154,3 +154,22 @@ export function getStatusColor(status: string): string {
   };
   return colors[status.toLowerCase()] || 'text-gray-600 bg-gray-100';
 }
+
+// Simple auth API client for demo
+export async function loginApi(username: string, password: string): Promise<{ customerId: number; username: string; }> {
+  const url = 'http://127.0.0.1:4000/auth/login';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+  if (!res.ok) {
+    let msg = 'Đăng nhập thất bại';
+    try {
+      const j = await res.json();
+      if (j?.error) msg = j.error;
+    } catch {}
+    throw new Error(msg);
+  }
+  return res.json();
+}

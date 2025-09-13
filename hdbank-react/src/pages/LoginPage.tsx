@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginPage.css';
+import { loginApi } from '../utils';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const LoginPage: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -42,13 +44,21 @@ const LoginPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // TODO: Implement actual login logic
-      console.log('Login attempt:', formData);
-      alert('Chức năng đăng nhập đang được phát triển...');
+      try {
+        const result = await loginApi(formData.username.trim(), formData.password);
+        // store customerId for later use (chat/plan)
+        localStorage.setItem('customerId', String(result.customerId));
+        localStorage.setItem('username', String(result.username));
+        // Điều hướng về trang chủ và bật flag hiển thị promo ngay
+        localStorage.setItem('forcePromo','1');
+        navigate('/');
+      } catch (err: any) {
+        alert(String(err?.message ?? 'Đăng nhập thất bại'));
+      }
     }
   };
 
