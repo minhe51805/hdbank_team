@@ -1,4 +1,5 @@
 import React from 'react';
+import MarqueePromotion from '../components/ui/MarqueePromotion';
 import HeroBanner from '../components/sections/HeroBanner';
 import Services from '../components/sections/Services';
 import ProductSlider from '../components/sections/ProductSlider';
@@ -28,6 +29,8 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
+      {/* Marquee Promotion - Vị trí trên cùng */}
+      <MarqueePromotion />
       
       {/* Hero Banner Section with integrated Three-Column Layout */}
       <HeroBanner />
@@ -65,170 +68,61 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Financial Insights Dashboard */}
-      <section className="insights-section">
+      {/* News & Promotions */}
+      <section className="news-section">
         <div className="container">
-          <h2 className="section-title text-gradient">Thông tin tài chính hôm nay</h2>
-          <p className="section-subtitle">
-            Cập nhật thông tin thị trường và cơ hội đầu tư mới nhất
-          </p>
-          
-          <div className="insights-grid">
-            <div className="insight-card market-overview">
-              <div className="card-header">
-                <h3>📊 Thị trường chứng khoán</h3>
-                <span className="trend-up">+2.3%</span>
-              </div>
-              <div className="market-stats">
-                <div className="stat-item">
-                  <span className="label">VN-Index</span>
-                  <span className="value">1,234.56</span>
-                  <span className="change positive">+12.34</span>
-                </div>
-                <div className="stat-item">
-                  <span className="label">HNX-Index</span>
-                  <span className="value">234.78</span>
-                  <span className="change positive">+5.67</span>
-                </div>
-                <div className="stat-item">
-                  <span className="label">UPCoM</span>
-                  <span className="value">89.12</span>
-                  <span className="change negative">-1.23</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="insight-card exchange-rates">
-              <div className="card-header">
-                <h3>💱 Tỷ giá ngoại tệ</h3>
-                <span className="update-time">Cập nhật: 14:30</span>
-              </div>
-              <div className="exchange-list">
-                <div className="exchange-item">
-                  <div className="currency">
-                    <span className="flag">🇺🇸</span>
-                    <span className="code">USD</span>
+          <div className="row">
+            <div className="col-md-6">
+              <h3>Tin tức mới nhất</h3>
+              <div className="news-list">
+                <div className="news-item">
+                  <div className="news-image">
+                    <img src="https://cdn.hdbank.com.vn/hdbank-file/news/thumbnail_1755934834317.jpg" alt="News" />
                   </div>
-                  <div className="rates">
-                    <span className="buy">24,100</span>
-                    <span className="sell">24,300</span>
+                  <div className="news-content">
+                    <h4>HDBank được vinh danh "Thương hiệu Quốc gia Việt Nam 2024"</h4>
+                    <p>HDBank tiếp tục khẳng định vị thế hàng đầu trong ngành ngân hàng Việt Nam...</p>
+                    <span className="news-date">25/08/2024</span>
                   </div>
                 </div>
-                <div className="exchange-item">
-                  <div className="currency">
-                    <span className="flag">🇪🇺</span>
-                    <span className="code">EUR</span>
+                
+                <div className="news-item">
+                  <div className="news-image">
+                    <img src="https://cdn.hdbank.com.vn/hdbank-file/news/thumbnail_1755573621159.jpg" alt="News" />
                   </div>
-                  <div className="rates">
-                    <span className="buy">25,800</span>
-                    <span className="sell">26,100</span>
-                  </div>
-                </div>
-                <div className="exchange-item">
-                  <div className="currency">
-                    <span className="flag">🇯🇵</span>
-                    <span className="code">JPY</span>
-                  </div>
-                  <div className="rates">
-                    <span className="buy">162</span>
-                    <span className="sell">168</span>
+                  <div className="news-content">
+                    <h4>Ra mắt tính năng mở tài khoản online mới</h4>
+                    <p>Khách hàng có thể mở tài khoản HDBank chỉ trong 3 phút với công nghệ eKYC...</p>
+                    <span className="news-date">20/08/2024</span>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div className="insight-card gold-price">
-              <div className="card-header">
-                <h3>🥇 Giá vàng SJC</h3>
-                <span className="trend-down">-0.5%</span>
-              </div>
-              <div className="gold-stats">
-                <div className="price-row">
-                  <span className="type">Vàng nhẫn</span>
-                  <div className="price-info">
-                    <span className="buy">75.8 triệu</span>
-                    <span className="sell">77.2 triệu</span>
+            
+            <div className="col-md-6">
+              <h3>Ưu đãi hot</h3>
+              <div className="promotion-list">
+                <div className="promotion-item">
+                  <div className="promotion-image">
+                    <img src="https://cdn.hdbank.com.vn/hdbank-file/promotion/thumbnail_1742802764080.jpg" alt="Promotion" />
+                  </div>
+                  <div className="promotion-content">
+                    <h4>Hoàn tiền lên đến 8% khi sử dụng thẻ tín dụng HDBank</h4>
+                    <p>Áp dụng cho tất cả giao dịch mua sắm, ăn uống, giải trí...</p>
+                    <span className="promotion-validity">Có hiệu lực đến 31/12/2024</span>
                   </div>
                 </div>
-                <div className="price-row">
-                  <span className="type">Vàng miếng</span>
-                  <div className="price-info">
-                    <span className="buy">76.5 triệu</span>
-                    <span className="sell">78.0 triệu</span>
+                
+                <div className="promotion-item">
+                  <div className="promotion-image">
+                    <img src="https://cdn.hdbank.com.vn/hdbank-file/promotion/thumbnail_1712029980463.jpg" alt="Promotion" />
+                  </div>
+                  <div className="promotion-content">
+                    <h4>Lãi suất tiết kiệm ưu đãi lên đến 6.8%/năm</h4>
+                    <p>Dành cho khách hàng mới mở tài khoản tiết kiệm online...</p>
+                    <span className="promotion-validity">Có hiệu lực đến 30/09/2024</span>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="insight-card interest-rates">
-              <div className="card-header">
-                <h3>💰 Lãi suất tiết kiệm</h3>
-                <span className="highlight">Ưu đãi đặc biệt</span>
-              </div>
-              <div className="rates-list">
-                <div className="rate-item featured">
-                  <span className="term">12 tháng</span>
-                  <span className="rate">6.8%/năm</span>
-                  <span className="bonus">+0.3% thưởng</span>
-                </div>
-                <div className="rate-item">
-                  <span className="term">6 tháng</span>
-                  <span className="rate">6.2%/năm</span>
-                </div>
-                <div className="rate-item">
-                  <span className="term">3 tháng</span>
-                  <span className="rate">5.8%/năm</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Hot Promotions Carousel */}
-      <section className="promotions-carousel-section">
-        <div className="container">
-          <h2 className="section-title text-gradient">🔥 Ưu đãi hot nhất tháng</h2>
-          <div className="promotions-carousel">
-            <div className="promo-card-new mega-deal">
-              <div className="promo-badge">SIÊU ƯU ĐÃI</div>
-              <div className="promo-content">
-                <h3>Hoàn tiền 15% thẻ tín dụng</h3>
-                <p>Dành riêng cho khách hàng mới</p>
-                <div className="promo-timer">
-                  <span>⏰ Còn 15 ngày</span>
-                </div>
-              </div>
-              <div className="promo-action">
-                <button className="btn-claim">Nhận ngay</button>
-              </div>
-            </div>
-
-            <div className="promo-card-new savings-boost">
-              <div className="promo-badge">TIẾT KIỆM</div>
-              <div className="promo-content">
-                <h3>Lãi suất 7.5%/năm</h3>
-                <p>Gửi online từ 100 triệu</p>
-                <div className="promo-timer">
-                  <span>⏰ Còn 7 ngày</span>
-                </div>
-              </div>
-              <div className="promo-action">
-                <button className="btn-claim">Gửi ngay</button>
-              </div>
-            </div>
-
-            <div className="promo-card-new loan-offer">
-              <div className="promo-badge">VAY VỐN</div>
-              <div className="promo-content">
-                <h3>Vay online 0% lãi suất</h3>
-                <p>30 ngày đầu miễn phí</p>
-                <div className="promo-timer">
-                  <span>⏰ Còn 3 ngày</span>
-                </div>
-              </div>
-              <div className="promo-action">
-                <button className="btn-claim">Vay ngay</button>
               </div>
             </div>
           </div>

@@ -45,12 +45,30 @@ export class ChatAPI {
       });
 
       const text = await response.text();
-      console.log('n8n raw response:', text);
+      console.log('CashyBear raw response:', text);
 
       let reply = text;
       try {
         const data = JSON.parse(text);
         reply = data?.reply ?? reply;
+
+        // Auto-accept: nếu server báo đã accepted, chủ động gọi /plan/accept để đảm bảo lưu vào DB
+        const planHint = (data as any)?.planHint as string | undefined;
+        const plan = (data as any)?.plan;
+        const personaName = String((request as any)?.metadata?.personalityName || 'Mentor');
+        const customerId = Number((request.metadata as any)?.customerId || 0);
+        if (planHint === 'accepted' && plan && customerId) {
+          try {
+            await fetch(`${NOTEBOOK_API}/plan/accept`, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ customerId, persona: personaName, plan })
+            });
+            console.log('Plan accepted & persisted via FE');
+          } catch (e) {
+            console.warn('Plan accept fallback failed:', e);
+          }
+        }
       } catch {}
 
       return String(reply || "Đã nhận được phản hồi từ CashyBear.");

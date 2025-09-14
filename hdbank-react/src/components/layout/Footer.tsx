@@ -5,9 +5,9 @@ import './Footer.css';
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-      {/* <div className="footer__logo__arrow">
+      <div className="footer__logo__arrow">
         <img alt="HDBank" src="/assets/images/icons/upTop.svg" />
-      </div> */}
+      </div>
       
       <div className="container">
         <div className="row">

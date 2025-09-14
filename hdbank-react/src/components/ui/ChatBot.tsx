@@ -154,32 +154,10 @@ const ChatBot: React.FC = () => {
   async function send() {
     const text = input.trim();
     if (!text || busy) return;
-    
-    // Check authentication from multiple sources
     const customerId = localStorage.getItem('customerId');
-    const hdBankUser = localStorage.getItem('hdbank_user');
-    const hdBankToken = localStorage.getItem('hdbank_token');
-    
-    console.log('🔍 Authentication check:', { customerId, hasUser: !!hdBankUser, hasToken: !!hdBankToken });
-    
-    if (!customerId && !hdBankUser) {
+    if (!customerId) {
       alert('Vui lòng đăng nhập trước khi chat để mình đọc đúng dữ liệu của bạn.');
       return;
-    }
-    
-    // If no customerId but has user data, try to extract it
-    let finalCustomerId = customerId;
-    if (!finalCustomerId && hdBankUser) {
-      try {
-        const userData = JSON.parse(hdBankUser);
-        finalCustomerId = userData.customerId || userData.id;
-        if (finalCustomerId) {
-          localStorage.setItem('customerId', String(finalCustomerId));
-          console.log('✅ CustomerId extracted from user data:', finalCustomerId);
-        }
-      } catch (e) {
-        console.error('❌ Failed to parse user data:', e);
-      }
     }
     setInput("");
     const userMessageIndex = messages.length;
@@ -192,6 +170,7 @@ const ChatBot: React.FC = () => {
     
     try {
       // Call real n8n API from New folder project
+      const customerId = localStorage.getItem('customerId') || undefined;
       const apiResponse = await ChatAPI.sendMessage({
         message: text,
         sessionId: sessionId,
@@ -200,7 +179,7 @@ const ChatBot: React.FC = () => {
         metadata: {
           personality: selectedPersonality?.id,
           personalityName: selectedPersonality?.name,
-          customerId: finalCustomerId
+          customerId
         }
       });
 

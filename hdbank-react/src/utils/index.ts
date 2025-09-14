@@ -173,3 +173,55 @@ export async function loginApi(username: string, password: string): Promise<{ cu
   }
   return res.json();
 }
+
+// Dashboard API client
+const NB_API = 'http://127.0.0.1:8010';
+
+export interface TodoTask {
+  dayIndex: number;
+  taskIndex: number;
+  date: string | null;
+  text: string;
+  progress: number; // 0..100
+  status: 'todo' | 'in_progress' | 'done' | string;
+  completedAt: string | null;
+}
+
+export interface TodoSummary {
+  totalTasks: number;
+  completedTasks: number;
+  completionPct: number;
+  perDay: { date: string; pct: number }[];
+  // money metrics
+  targetAmount?: number | null;
+  recommendedWeeklySave?: number | null;
+  weeklyCapSave?: number | null;
+  remainingAmount?: number | null;
+  savedAmount?: number | null;
+}
+
+export async function getTodo(customerId: number): Promise<{ planId: string | null; tasks: TodoTask[]; summary: TodoSummary }>{
+  const res = await fetch(`${NB_API}/dashboard/todo?customerId=${encodeURIComponent(customerId)}`);
+  if (!res.ok) throw new Error('Không tải được Dashboard');
+  return res.json();
+}
+
+export async function updateTodo(planId: string, dayIndex: number, taskIndex: number, progress: number, note?: string): Promise<{ ok: boolean; progress: number; status: string }>{
+  const res = await fetch(`${NB_API}/dashboard/todo/update`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ planId, dayIndex, taskIndex, progress, note })
+  });
+  if (!res.ok) throw new Error('Cập nhật tiến độ thất bại');
+  return res.json();
+}
+
+export async function checkTodo(planId: string, dayIndex: number, taskIndex: number, done: boolean): Promise<{ ok: boolean; progress: number; status: string }>{
+  const res = await fetch(`${NB_API}/dashboard/todo/check`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ planId, dayIndex, taskIndex, done })
+  });
+  if (!res.ok) throw new Error('Cập nhật checkbox thất bại');
+  return res.json();
+}

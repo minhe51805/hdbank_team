@@ -1,7 +1,6 @@
 /* HomePage Styles */
 .home-page {
   min-height: 100vh;
-  background: #ffffff;
 }
 
 .container {
@@ -22,21 +21,14 @@
   padding: 0 15px;
 }
 
-.col-md-4 {
-  flex: 0 0 33.333333%;
-  max-width: 33.333333%;
-  padding: 0 15px;
-}
-
 .align-items-center {
   align-items: center;
 }
 
 /* Section Styles */
 .calculator-section {
-  padding: 0 0 80px 0;
+  padding: 0 0 60px 0;
   position: relative;
-  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 50%, #f0f9ff 100%);
 }
 
 .services-section,
@@ -44,864 +36,240 @@
 .news-section,
 .download-app-section,
 .contact-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 
 .services-section {
-  margin-top: 0;
-  padding-top: 80px;
-  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 50%, #f0f9ff 100%);
-  position: relative;
-}
-
-.services-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #be1128, transparent);
-}
-
-.products-section {
-  background: #ffffff;
-  border-top: 1px solid #e5e7eb;
-}
-
-.products-section.bg-gradient-light {
-  background: linear-gradient(135deg, #fef7f0 0%, #ffffff 50%, #f0f9ff 100%);
+  background: #f8f9fa;
 }
 
 .corporate-section {
-  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 50%, #f0f9ff 100%);
+  background: #f8f9fa;
 }
 
 .news-section {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 50%, #ffffff 100%);
-  position: relative;
-}
-
-.news-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  background: white;
 }
 
 .download-app-section {
-  background: linear-gradient(135deg, #be1128 0%, #d4234a 50%, #ff6b35 100%);
+  background: linear-gradient(135deg, #be1128, #d4234a);
   color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.download-app-section::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 40%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 .contact-section {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  background: #1a1a1a;
   color: white;
-  position: relative;
-}
-
-.contact-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #64748b, transparent);
 }
 
 /* Section Titles */
 .section-title {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  color: #111827;
+  color: #333;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   position: relative;
-  background: linear-gradient(135deg, #be1128, #d4234a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
 }
 
 .section-title::after {
   content: '';
   position: absolute;
-  bottom: -20px;
+  bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 60px;
   height: 4px;
-  background: linear-gradient(90deg, #be1128, #d4234a, #ff6b35);
+  background: linear-gradient(90deg, #be1128, #d4234a);
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(190, 17, 40, 0.3);
-}
-
-.download-app-section .section-title,
-.contact-section .section-title {
-  background: linear-gradient(135deg, #ffffff, #f0f9ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
 }
 
 .download-app-section .section-title::after,
 .contact-section .section-title::after {
-  background: linear-gradient(90deg, #ffffff, #3b82f6, #ffffff);
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+  background: white;
 }
 
-.section-subtitle {
-  font-size: 18px;
-  color: #6b7280;
-  text-align: center;
-  margin-bottom: 50px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-}
-
-/* Financial Insights Dashboard */
-.insights-section {
-  padding: 100px 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.insights-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(190, 17, 40, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-}
-
-.insights-section .section-title,
-.insights-section .section-subtitle {
-  position: relative;
-  z-index: 1;
-}
-
-.insights-section .section-title {
-  background: linear-gradient(135deg, #ffffff, #3b82f6, #10b981);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.insights-section .section-subtitle {
-  color: #cbd5e1;
-}
-
-.insights-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 32px;
-  position: relative;
-  z-index: 1;
-  margin-top: 60px;
-}
-
-.insight-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 32px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.insight-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #be1128, #3b82f6, #10b981, #fbbf24);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.insight-card:hover {
-  transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-}
-
-.insight-card:hover::before {
-  opacity: 1;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.card-header h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-}
-
-.trend-up {
-  background: linear-gradient(135deg, #10b981, #34d399);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+/* News Section */
+.news-section h3 {
+  font-size: 24px;
   font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #be1128;
 }
 
-.trend-down {
-  background: linear-gradient(135deg, #ef4444, #f87171);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.update-time {
-  color: #94a3b8;
-  font-size: 12px;
-}
-
-.highlight {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-/* Market Overview */
-.market-stats {
+.news-list,
+.promotion-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 25px;
 }
 
-.stat-item {
+.news-item,
+.promotion-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
+  gap: 20px;
+  background: white;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-item .label {
-  font-size: 14px;
-  color: #cbd5e1;
-}
-
-.stat-item .value {
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.stat-item .change {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 8px;
-}
-
-.change.positive {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
-}
-
-.change.negative {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-}
-
-/* Exchange Rates */
-.exchange-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.exchange-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-}
-
-.currency {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.currency .flag {
-  font-size: 16px;
-}
-
-.currency .code {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.rates {
-  display: flex;
-  gap: 12px;
-}
-
-.rates .buy,
-.rates .sell {
-  font-size: 12px;
-  color: #cbd5e1;
-}
-
-/* Gold Price */
-.gold-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-}
-
-.price-row .type {
-  font-size: 14px;
-  color: #cbd5e1;
-}
-
-.price-info {
-  display: flex;
-  gap: 12px;
-}
-
-.price-info .buy,
-.price-info .sell {
-  font-size: 12px;
-  color: #fbbf24;
-  font-weight: 600;
-}
-
-/* Interest Rates */
-.rates-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.rate-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
-.rate-item.featured {
-  background: linear-gradient(135deg, rgba(190, 17, 40, 0.2), rgba(59, 130, 246, 0.2));
-  border-color: rgba(190, 17, 40, 0.3);
+.news-item:hover,
+.promotion-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-.rate-item .term {
-  font-size: 14px;
-  color: #cbd5e1;
-}
-
-.rate-item .rate {
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.rate-item .bonus {
-  font-size: 11px;
-  background: linear-gradient(135deg, #10b981, #34d399);
-  color: white;
-  padding: 2px 8px;
+.news-image,
+.promotion-image {
+  flex-shrink: 0;
+  width: 120px;
+  height: 80px;
   border-radius: 8px;
-}
-
-/* Hot Promotions Carousel */
-.promotions-carousel-section {
-  padding: 100px 0;
-  background: linear-gradient(135deg, #fef3c7 0%, #ffffff 50%, #fef3c7 100%);
-  position: relative;
   overflow: hidden;
 }
 
-.promotions-carousel-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(190, 17, 40, 0.1) 0%, transparent 50%);
-}
-
-.promotions-carousel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 32px;
-  margin-top: 60px;
-  position: relative;
-  z-index: 1;
-}
-
-.promo-card-new {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 0;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  border: 3px solid transparent;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.promo-card-new::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 24px;
-  padding: 3px;
-  background: linear-gradient(135deg, #be1128, #3b82f6, #10b981, #fbbf24);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.promo-card-new:hover {
-  transform: translateY(-12px) rotateX(5deg);
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.2);
-}
-
-.promo-card-new:hover::before {
-  opacity: 1;
-}
-
-.promo-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #be1128, #d4234a);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(190, 17, 40, 0.4);
-}
-
-.mega-deal .promo-badge {
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  animation: pulse 2s infinite;
-}
-
-.savings-boost .promo-badge {
-  background: linear-gradient(135deg, #059669, #10b981);
-}
-
-.loan-offer .promo-badge {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.promo-content {
-  padding: 32px 24px 24px;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  position: relative;
-}
-
-.mega-deal .promo-content {
-  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
-}
-
-.savings-boost .promo-content {
-  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-}
-
-.loan-offer .promo-content {
-  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
-}
-
-.promo-content h3 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 12px;
-  line-height: 1.3;
-}
-
-.promo-content p {
-  font-size: 15px;
-  color: #6b7280;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-
-.promo-timer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.promo-timer span {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  animation: blink 2s infinite;
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.7; }
-}
-
-.promo-action {
-  padding: 0 24px 24px;
-  background: #ffffff;
-}
-
-.btn-claim {
-  width: 100%;
-  background: linear-gradient(135deg, #be1128, #d4234a);
-  color: white;
-  border: none;
-  border-radius: 16px;
-  padding: 16px 24px;
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-claim::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.news-image img,
+.promotion-image img {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  object-fit: cover;
 }
 
-.btn-claim:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(190, 17, 40, 0.4);
-  background: linear-gradient(135deg, #d4234a, #be1128);
+.news-content,
+.promotion-content {
+  flex: 1;
 }
 
-.btn-claim:hover::before {
-  left: 100%;
+.news-content h4,
+.promotion-content h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
-.mega-deal .btn-claim {
-  background: linear-gradient(135deg, #dc2626, #ef4444);
+.news-content p,
+.promotion-content p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 10px;
 }
 
-.mega-deal .btn-claim:hover {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.4);
-}
-
-.savings-boost .btn-claim {
-  background: linear-gradient(135deg, #059669, #10b981);
-}
-
-.savings-boost .btn-claim:hover {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 12px 32px rgba(5, 150, 105, 0.4);
-}
-
-.loan-offer .btn-claim {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
-}
-
-.loan-offer .btn-claim:hover {
-  background: linear-gradient(135deg, #a855f7, #7c3aed);
-  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.4);
+.news-date,
+.promotion-validity {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
 }
 
 /* Download App Section */
 .app-info h2 {
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
-  margin-bottom: 24px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
+  margin-bottom: 20px;
 }
 
 .app-info p {
-  font-size: 20px;
-  margin-bottom: 36px;
-  opacity: 0.95;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
 }
 
 .app-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 48px 0;
-  position: relative;
-  z-index: 1;
+  margin: 0 0 40px 0;
 }
 
 .app-features li {
-  font-size: 17px;
-  margin-bottom: 16px;
-  opacity: 0.95;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.app-features li::before {
-  content: '✨';
   font-size: 16px;
-  color: #fbbf24;
+  margin-bottom: 12px;
+  opacity: 0.9;
 }
 
 .download-buttons {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
 }
 
 .app-store-btn,
 .google-play-btn {
   display: block;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
 }
 
 .app-store-btn:hover,
 .google-play-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .app-store-btn img,
 .google-play-btn img {
-  height: 56px;
+  height: 50px;
   width: auto;
-  filter: brightness(1.1);
 }
 
 .app-mockup {
   text-align: center;
-  position: relative;
-  z-index: 1;
 }
 
 .app-mockup img {
   max-width: 100%;
   height: auto;
-  max-height: 550px;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
-  transition: transform 0.3s ease;
-}
-
-.app-mockup:hover img {
-  transform: translateY(-8px) scale(1.02);
+  max-height: 500px;
 }
 
 /* Contact Section */
 .contact-item {
   text-align: center;
-  padding: 40px 24px;
-  transition: transform 0.3s ease;
-}
-
-.contact-item:hover {
-  transform: translateY(-4px);
+  padding: 30px 20px;
 }
 
 .contact-icon {
-  width: 96px;
-  height: 96px;
-  background: linear-gradient(135deg, #be1128, #d4234a);
+  width: 80px;
+  height: 80px;
+  background: #be1128;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 24px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  box-shadow: 0 8px 32px rgba(190, 17, 40, 0.3);
-}
-
-.contact-icon::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  background: linear-gradient(135deg, #be1128, #3b82f6, #10b981);
-  border-radius: 50%;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
 }
 
 .contact-item:hover .contact-icon {
-  background: linear-gradient(135deg, #d4234a, #ff6b35);
-  transform: scale(1.1) rotate(5deg);
-}
-
-.contact-item:hover .contact-icon::before {
-  opacity: 1;
-}
-
-.contact-icon i {
-  font-size: 36px;
-  color: white;
-  transition: transform 0.3s ease;
-}
-
-.contact-item:hover .contact-icon i {
+  background: #d4234a;
   transform: scale(1.1);
 }
 
-.contact-item h4 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 12px;
-  transition: color 0.3s ease;
+.contact-icon i {
+  font-size: 30px;
+  color: white;
 }
 
-.contact-item:hover h4 {
-  color: #f0f9ff;
+.contact-item h4 {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 10px;
 }
 
 .contact-item p {
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #be1128, #3b82f6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #be1128;
+  margin-bottom: 5px;
 }
 
 .contact-item span {
-  font-size: 15px;
-  color: #cbd5e1;
-  font-weight: 500;
-}
-
-/* Utility Classes */
-.text-gradient {
-  background: linear-gradient(135deg, #be1128, #d4234a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.animate-fade-in-left {
-  animation: fadeInLeft 0.8s ease-out;
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  font-size: 14px;
+  color: #ccc;
 }
 
 /* Responsive Design */
@@ -909,74 +277,41 @@
   .calculator-section,
   .services-section,
   .products-section,
-  .insights-section,
-  .promotions-carousel-section,
+  .news-section,
   .download-app-section,
   .contact-section {
-    padding: 60px 0;
+    padding: 40px 0;
   }
   
   .section-title {
-    font-size: 30px;
-    margin-bottom: 50px;
-  }
-  
-  .col-md-6,
-  .col-md-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
+    font-size: 28px;
     margin-bottom: 40px;
   }
   
-  /* Financial Insights Mobile */
-  .insights-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-top: 40px;
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 30px;
   }
   
-  .insight-card {
-    padding: 24px;
+  .news-item,
+  .promotion-item {
+    flex-direction: column;
+    gap: 15px;
   }
   
-  .card-header h3 {
-    font-size: 16px;
-  }
-  
-  /* Promotions Carousel Mobile */
-  .promotions-carousel {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-top: 40px;
-  }
-  
-  .promo-card-new:hover {
-    transform: translateY(-6px) rotateX(0deg);
-  }
-  
-  .promo-content {
-    padding: 24px 20px 20px;
-  }
-  
-  .promo-content h3 {
-    font-size: 20px;
-  }
-  
-  .promo-action {
-    padding: 0 20px 20px;
-  }
-  
-  .btn-claim {
-    padding: 14px 20px;
-    font-size: 14px;
+  .news-image,
+  .promotion-image {
+    width: 100%;
+    height: 150px;
   }
   
   .app-info h2 {
-    font-size: 32px;
+    font-size: 28px;
   }
   
   .app-info p {
-    font-size: 18px;
+    font-size: 16px;
   }
   
   .download-buttons {
@@ -984,12 +319,7 @@
   }
   
   .contact-item {
-    margin-bottom: 40px;
-  }
-  
-  .contact-icon {
-    width: 80px;
-    height: 80px;
+    margin-bottom: 30px;
   }
 }
 
@@ -997,94 +327,62 @@
   .calculator-section,
   .services-section,
   .products-section,
-  .insights-section,
-  .promotions-carousel-section,
+  .news-section,
   .download-app-section,
   .contact-section {
-    padding: 50px 0;
+    padding: 30px 0;
   }
   
   .section-title {
-    font-size: 28px;
-    margin-bottom: 40px;
+    font-size: 24px;
+    margin-bottom: 30px;
   }
   
-  /* Financial Insights Mobile Small */
-  .insights-grid {
-    gap: 20px;
+  .news-section h3 {
+    font-size: 20px;
   }
   
-  .insight-card {
-    padding: 20px;
+  .news-item,
+  .promotion-item {
+    padding: 15px;
   }
   
-  .card-header h3 {
+  .news-content h4,
+  .promotion-content h4 {
     font-size: 15px;
   }
   
-  .stat-item,
-  .exchange-item,
-  .price-row,
-  .rate-item {
-    padding: 10px 12px;
-  }
-  
-  /* Promotions Mobile Small */
-  .promotions-carousel {
-    gap: 20px;
-  }
-  
-  .promo-content {
-    padding: 20px 16px 16px;
-  }
-  
-  .promo-content h3 {
-    font-size: 18px;
-  }
-  
-  .promo-content p {
-    font-size: 14px;
-  }
-  
-  .promo-action {
-    padding: 0 16px 16px;
-  }
-  
-  .btn-claim {
-    padding: 12px 16px;
+  .news-content p,
+  .promotion-content p {
     font-size: 13px;
   }
   
   .app-info h2 {
-    font-size: 28px;
+    font-size: 24px;
   }
   
   .app-info p {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .app-features li {
-    font-size: 15px;
+    font-size: 14px;
   }
   
   .contact-icon {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
   }
   
   .contact-icon i {
-    font-size: 28px;
+    font-size: 24px;
   }
   
   .contact-item h4 {
-    font-size: 20px;
-  }
-  
-  .contact-item p {
     font-size: 18px;
   }
   
-  .container {
-    padding: 0 20px;
+  .contact-item p {
+    font-size: 16px;
   }
 }

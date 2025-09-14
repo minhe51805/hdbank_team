@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import './LoginPage.css';
 import { loginApi } from '../utils';
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
-  
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -16,14 +12,7 @@ const LoginPage: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Redirect if already authenticated
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/vi');
-    }
-  }, [isAuthenticated, navigate]);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -58,49 +47,18 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    setErrors({});
-
-    try {
-      await login(formData.username, formData.password);
-      
-      // Get user data from AuthContext after successful login
-      const userData = JSON.parse(localStorage.getItem('hdbank_user') || '{}');
-      if (userData.customerId) {
-        localStorage.setItem('customerId', String(userData.customerId));
-        localStorage.setItem('username', String(userData.username));
+    if (validateForm()) {
+      try {
+        const result = await loginApi(formData.username.trim(), formData.password);
+        // store customerId for later use (chat/plan)
+        localStorage.setItem('customerId', String(result.customerId));
+        localStorage.setItem('username', String(result.username));
+        // Điều hướng về trang chủ và bật flag hiển thị promo ngay
         localStorage.setItem('forcePromo','1');
-        console.log('✅ CustomerId stored:', userData.customerId);
-      } else {
-        console.warn('⚠️ No customerId found in user data');
+        navigate('/');
+      } catch (err: any) {
+        alert(String(err?.message ?? 'Đăng nhập thất bại'));
       }
-      
-      // Navigation will be handled by useEffect after authentication
-      console.log('✅ Login successful, redirecting...');
-      
-    } catch (error: any) {
-      console.error('❌ Login failed:', error.message);
-      
-      // Set appropriate error message
-      if (error.message.includes('đăng nhập') || error.message.includes('mật khẩu')) {
-        setErrors({ 
-          general: error.message
-        });
-      } else if (error.message.includes('khóa')) {
-        setErrors({ 
-          general: error.message
-        });
-      } else {
-        setErrors({ 
-          general: 'Không thể kết nối đến server. Vui lòng thử lại sau.'
-        });
-      }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -176,8 +134,6 @@ const LoginPage: React.FC = () => {
                 {errors.password && <span className="error-message">{errors.password}</span>}
               </div>
 
-              {errors.general && <div className="error-message general-error">{errors.general}</div>}
-
               <div className="form-options">
                 <label className="checkbox-label">
                   <input
@@ -195,19 +151,8 @@ const LoginPage: React.FC = () => {
                 </Link>
               </div>
 
-              <button 
-                type="submit" 
-                className={`login-btn ${isSubmitting ? 'loading' : ''}`}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <span className="spinner"></span>
-                    Đang đăng nhập...
-                  </>
-                ) : (
-                  'Đăng nhập'
-                )}
+              <button type="submit" className="login-btn">
+                Đăng nhập
               </button>
 
               <div className="login-divider">
