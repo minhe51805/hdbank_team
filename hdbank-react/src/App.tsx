@@ -8,6 +8,7 @@ import CorporatePage from './pages/CorporatePage';
 import InvestorPage from './pages/InvestorPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ExplorerPage from './pages/ExplorerPage';
 import './hdbank-theme.css';
 import './App.css';
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/vi/investor/*" element={<InvestorPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/explorer" element={<ExplorerPage />} />
           </Routes>
         </main>
 
