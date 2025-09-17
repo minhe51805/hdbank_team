@@ -14,14 +14,14 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 20px;
 }
 
 .nav-full {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 30px;
+  justify-content: center;
+  gap: 20px;
   padding: 15px 0;
   position: relative;
 }
@@ -60,6 +60,7 @@
 .logo {
   margin-right: 0;
   flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .logo img {
@@ -99,82 +100,149 @@
 .search-box {
   position: relative;
   margin: 0;
-  flex: 1;
-  max-width: 300px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  z-index: 1000;
 }
 
+/* No size change - keep same position */
+
+/* Search Trigger Button (Icon only) */
+.search-trigger {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-trigger:hover {
+  border-color: #be1128;
+  background-color: #fef7f7;
+}
+
+.search-trigger img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Keep trigger visible and in same position when active */
+.search-box.active .search-trigger {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Search Form (Hidden by default) */
 .searchform {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 40px;
+  transform: scaleX(0);
+  transform-origin: right center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+}
+
+.search-box.active .searchform {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleX(1);
 }
 
 .form-group {
   position: relative;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .searchinput {
   width: 100%;
-  max-width: 280px;
-  padding: 10px 40px 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 25px;
+  height: 40px;
+  padding: 0 45px 0 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.3s ease;
+  background: white;
+  transition: all 0.3s ease;
 }
 
 .searchinput:focus {
   border-color: #be1128;
 }
 
-.searchform button {
+/* Search Submit Button */
+.searchform button[type="submit"] {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
+  width: 32px;
+  height: 32px;
+  background: #be1128;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
-.searchform button img {
-  width: 16px;
-  height: 16px;
+.searchform button[type="submit"]:hover {
+  background: #a50e22;
 }
 
-.searchIcon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  padding: 5px;
+.searchform button[type="submit"] img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
-.searchIcon img {
-  width: 18px;
-  height: 18px;
-}
-
+/* Close Button */
 .close {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 50%;
   transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
   cursor: pointer;
-  padding: 5px;
   display: none;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close:hover {
+  background-color: #e0e0e0;
 }
 
 .search-box.active .close {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .close img {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
+  opacity: 0.6;
 }
 
 /* Right side elements container */
@@ -240,7 +308,7 @@
 }
 
 .dropdown-toggle img {
-  width: 24px;
+  width: 18px;
   height: 18px;
   border-radius: 2px;
 }
@@ -258,7 +326,7 @@
   display: none;
   list-style: none;
   margin: 0;
-  padding: 8px 0;
+  padding: 5px 0;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -291,6 +359,264 @@
 .flag span {
   font-size: 14px;
   color: #333;
+}
+
+/* Navigation Left Side */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+/* Blur effect when search is active */
+.nav-full.search-active .nav-left {
+  opacity: 0.4;
+  filter: blur(1.5px);
+  pointer-events: none;
+  transform: scale(0.98);
+}
+
+/* Keep logo normal when search active - no blur effect */
+.nav-full.search-active .nav-left .logo {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: scale(1) !important;
+}
+
+/* Add subtle overlay effect (skip logo area) */
+.nav-full.search-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 200px;
+  right: 80px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(0.5px);
+  pointer-events: none;
+  z-index: 500;
+  transition: all 0.3s ease;
+}
+
+/* Enhance search form when active */
+.search-box.active .searchform {
+  box-shadow: 0 8px 32px rgba(190, 17, 40, 0.15);
+  border: 2px solid rgba(190, 17, 40, 0.1);
+}
+
+/* User Menu Styles */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 1000;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 2px solid #e5e5e5;
+  border-radius: 25px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.user-btn:hover {
+  border-color: #be1128;
+  background-color: #fef7f7;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.user-greeting {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+.user-arrow {
+  transition: transform 0.3s ease;
+  color: #666;
+}
+
+.user-arrow.open {
+  transform: rotate(180deg);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.user-info {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f8f9fa;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.user-segment {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.user-balance {
+  font-size: 14px;
+  color: #be1128;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.user-actions {
+  padding: 8px 0;
+}
+
+.user-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-action:hover {
+  background-color: #f3f4f6;
+  color: #be1128;
+}
+
+.logout-btn {
+  border-top: 1px solid #f0f0f0;
+  color: #dc2626;
+}
+
+.logout-btn:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* Login/Register Buttons */
+.register, .login {
+  background: none;
+  border: 2px solid #be1128;
+  color: #be1128;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.register p, .login p {
+  margin: 0;
+}
+
+.login {
+  background: #be1128;
+  color: white;
+}
+
+.register:hover {
+  background: #be1128;
+  color: white;
+}
+
+.login:hover {
+  background: #a50e22;
+}
+
+/* Mobile User Menu */
+.mobile-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.mobile-user-info {
+  flex: 1;
+}
+
+.mobile-user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.mobile-user-segment {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.mobile-logout {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-logout:hover {
+  background: #b91c1c;
 }
 
 /* Mobile Menu */

@@ -1,9 +1,7 @@
 import React from 'react';
-import MarqueePromotion from '../components/ui/MarqueePromotion';
 import HeroBanner from '../components/sections/HeroBanner';
 import Services from '../components/sections/Services';
 import ProductSlider from '../components/sections/ProductSlider';
-import ChatBot from '../components/ui/ChatBot';
 import './HomePage.css';
 import { fetchOffer } from '../utils/promoAPI';
 import NotificationToast from '../components/ui/NotificationToast';
@@ -29,9 +27,6 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
-      {/* Marquee Promotion - Vị trí trên cùng */}
-      <MarqueePromotion />
-      
       {/* Hero Banner Section with integrated Three-Column Layout */}
       <HeroBanner />
 
@@ -204,9 +199,6 @@ const HomePage: React.FC = () => {
       {toast && (
         <NotificationToast title={toast.title} lines={toast.lines} timeoutMs={toast.timeoutMs} position="topRight" offsetTop={96} onClose={() => setToast(null)} />
       )}
-
-      {/* HDBank ChatBot */}
-      <ChatBot />
     </div>
   );
 };

@@ -78,7 +78,7 @@ a:hover {
 /* Buttons */
 .btn {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 12px 12px;
   border: none;
   border-radius: 6px;
   font-size: 14px;
@@ -87,7 +87,7 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  line-height: 1;
+  line-height: 0.8;
 }
 
 .btn-primary {

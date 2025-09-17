@@ -13,9 +13,9 @@ interface LoanData {
 
 const LoanCalculator: React.FC<LoanCalculatorProps> = ({ className = "" }) => {
   const [loanData, setLoanData] = useState<LoanData>({
-    amount: 500000000,
-    term: 60,
-    interestRate: 7.5
+    amount: 1000000000,
+    term: 48,
+    interestRate: 7
   });
 
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
@@ -68,8 +68,8 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ className = "" }) => {
   return (
     <div className={`loan-calculator ${className}`}>
       <div className="calculator-tabs">
-        <button className="tab-button active">Ước tình khoản vay</button>
-        <button className="tab-button inactive">Tỷ giá</button>
+        <button className="tab-button active">Công cụ tính khoản vay</button>
+        <button className="tab-button inactive">Quy đổi tỷ giá</button>
       </div>
 
       <div className="calculator-content">
@@ -157,17 +157,26 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ className = "" }) => {
         <div className="results-section">
           <div className="result-item">
             <span className="result-label">Trả hàng tháng</span>
-            <span className="result-value">{formatVND(monthlyPayment)} ₫</span>
+            <span className="result-value">{formatVND(monthlyPayment)} VNĐ</span>
           </div>
           <div className="result-note">
             Xem bảng tính gốc và lãi tạm tính
           </div>
         </div>
 
-        {/* Calculate Button */}
-        <button className="calculate-btn">
-          Tính toán
-        </button>
+        {/* Bottom Section with detailed info and button */}
+        <div className="bottom-section">
+          <div className="loan-details">
+            <div className="detail-text">
+              Số tiền vay: {formatVND(loanData.amount)} VNĐ<br />
+              Kỳ hạn: {loanData.term} tháng | Lãi suất: {loanData.interestRate}%<br />
+              <small>* Số liệu mang tính tham khảo, chưa bao gồm các loại phí</small>
+            </div>
+          </div>
+          <button className="calculate-btn">
+            Tiếp tục
+          </button>
+        </div>
       </div>
     </div>
   );

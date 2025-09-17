@@ -1,0 +1,454 @@
+/* Modern Personal Dashboard Styles */
+.personal-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 40px 0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.personal-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header Section */
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.dashboard-title {
+  font-size: 42px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #be1128, #d4234a, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 16px 0;
+  letter-spacing: -1px;
+}
+
+.dashboard-subtitle {
+  font-size: 18px;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Summary Cards Grid */
+.dashboard-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+/* Progress Card */
+.progress-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #be1128, #f97316);
+  border-radius: 24px 24px 0 0;
+}
+
+.progress-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-title::before {
+  content: '📊';
+  font-size: 24px;
+}
+
+.progress-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Progress Circle */
+.progress-circle {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#be1128 0deg, #be1128 var(--progress-angle, 0deg), #f1f5f9 var(--progress-angle, 0deg));
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-circle::before {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: white;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.progress-percentage {
+  position: relative;
+  z-index: 2;
+  font-size: 32px;
+  font-weight: 900;
+  color: #be1128;
+}
+
+/* Progress Stats */
+.progress-stats {
+  flex: 1;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.stat-value.highlight {
+  color: #be1128;
+}
+
+/* CashyBear Card */
+.cashybear-card {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 24px;
+  padding: 32px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(251, 191, 36, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cashybear-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cashybear-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 28px 60px rgba(251, 191, 36, 0.4);
+}
+
+.cashybear-card .card-title {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.cashybear-card .card-title::before {
+  content: '🐻';
+  font-size: 28px;
+}
+
+.cashybear-message {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Todo Section */
+.todo-section {
+  margin-top: 48px;
+}
+
+.todo-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.todo-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+.todo-title::before {
+  content: '✅';
+  font-size: 32px;
+  margin-right: 8px;
+}
+
+/* Todo Day Card */
+.todo-day-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.todo-day-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: rgba(190, 17, 40, 0.2);
+}
+
+.todo-date {
+  font-size: 18px;
+  font-weight: 700;
+  color: #be1128;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(190, 17, 40, 0.1);
+}
+
+/* Todo Item */
+.todo-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+  transition: all 0.2s ease;
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-item:hover {
+  padding-left: 8px;
+  background: rgba(251, 191, 36, 0.03);
+  border-radius: 8px;
+  margin: 0 -8px;
+}
+
+/* Custom Checkbox */
+.todo-checkbox {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todo-checkbox:checked {
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  border-color: #be1128;
+}
+
+.todo-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.todo-text {
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.todo-item:has(.todo-checkbox:checked) .todo-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Custom Progress Bar */
+.progress-bar-container {
+  width: 160px;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #be1128, #f97316);
+  border-radius: 20px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-percentage-small {
+  font-size: 14px;
+  font-weight: 700;
+  color: #be1128;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Loading States */
+.loading-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.error-state {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  padding: 16px;
+  color: #dc2626;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-summary {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .progress-content {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .personal-page {
+    padding: 20px 0;
+  }
+  
+  .personal-page .container {
+    padding: 0 16px;
+  }
+  
+  .dashboard-title {
+    font-size: 32px;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 16px;
+  }
+  
+  .progress-card,
+  .cashybear-card {
+    padding: 24px;
+  }
+  
+  .todo-item {
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+  }
+  
+  .progress-bar-container {
+    width: 100%;
+    margin-top: 8px;
+    grid-column: 1 / -1;
+  }
+  
+  .progress-percentage-small {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-top: 4px;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.personal-page .container > * {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.personal-page .container > *:nth-child(1) { animation-delay: 0.1s; }
+.personal-page .container > *:nth-child(2) { animation-delay: 0.2s; }
+.personal-page .container > *:nth-child(3) { animation-delay: 0.3s; }

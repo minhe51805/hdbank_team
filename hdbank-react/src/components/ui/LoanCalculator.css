@@ -1,14 +1,14 @@
-/* LoanCalculator Component Styles - Optimized Version */
+/* LoanCalculator Component Styles - Pink Theme */
 .loan-calculator {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(220, 180, 180, 0.95) 0%, rgba(200, 160, 160, 0.95) 100%);
+  border-radius: 40px;
   padding: 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   overflow: hidden;
-  width: 100%;
-  max-width: 400px;
+  width: 320px;
+  max-width: 320px;
   font-size: 13px;
 }
 
@@ -33,7 +33,7 @@
 .tab-button.active {
   background: #be1128;
   color: white;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .tab-button.inactive {
@@ -47,16 +47,18 @@
 
 /* Calculator Content */
 .calculator-content {
-  padding: 20px 20px 18px;
+  padding: 16px 18px 14px;
 }
 
 /* Form Sections */
 .form-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .form-section.half-width {
   flex: 1;
+  max-width: 120px;
+  min-width: 80px;
 }
 
 .form-row {
@@ -68,15 +70,16 @@
 
 .form-row-group {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 2px;
+  margin-bottom: 14px;
+  justify-content: space-between;
 }
 
 .form-label {
-  font-size: 13px;
+  font-size: 5px;
   color: #333;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   display: block;
 }
 
@@ -94,7 +97,7 @@
 }
 
 .currency {
-  font-size: 12px;
+  font-size: 10px;
   color: #666;
   font-weight: 500;
 }
@@ -118,7 +121,7 @@
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #be1128, #d4234a);
+  background: linear-gradient(90deg, #be1128, #e53e3e, #ff6b6b);
   border-radius: 3px;
   transition: width 0.2s ease;
 }
@@ -194,50 +197,64 @@
 .term-controls {
   display: flex;
   align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  height: 28px;
+  padding: 2px 6px;
+  gap: 3px;
+  min-width: 70px;
+  justify-content: space-between;
 }
 
 .term-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: #f8f9fa;
-  color: #666;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid #ddd !important;
+  background: #ffffff !important;
+  color: #be1128 !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   transition: all 0.2s ease;
+  border-radius: 50% !important;
+  margin: 0 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+  flex-shrink: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .term-btn:hover {
-  background: #be1128;
-  color: white;
+  background: #be1128 !important;
+  color: white !important;
+  border-color: #be1128 !important;
 }
 
 .term-input {
   flex: 1;
-  height: 32px;
+  height: 20px;
   border: none;
   text-align: center;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   color: #333;
-  background: white;
+  background: transparent;
+  min-width: 30px;
+  max-width: 40px;
 }
 
 /* Interest Rate Input */
 .interest-input {
   width: 100%;
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 13px;
+  height: 28px;
+  padding: 0 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+  font-size: 11px;
   font-weight: 600;
   color: #333;
   text-align: center;
@@ -245,24 +262,20 @@
 
 .interest-input:focus {
   outline: none;
-  border-color: #be1128;
-  box-shadow: 0 0 0 2px rgba(190, 17, 40, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 2px rgba(190, 17, 40, 0.2);
 }
 
 /* Results Section */
 .results-section {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 6px;
-  margin: 18px 0;
-  text-align: center;
+
 }
 
 .result-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .result-label {
@@ -271,7 +284,7 @@
 }
 
 .result-value {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 700;
   color: #be1128;
 }
@@ -283,24 +296,52 @@
   cursor: pointer;
 }
 
-/* Calculate Button */
+/* Bottom Section Layout */
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 12px;
+  gap: 15px;
+}
+
+.loan-details {
+  flex: 1;
+}
+
+.detail-text {
+  font-size: 9px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.detail-text small {
+  font-size: 8px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Calculate Button - Orange Theme */
 .calculate-btn {
-  width: 100%;
-  height: 42px;
-  background: linear-gradient(135deg, #be1128, #d4234a);
+  width: 80px;
+  height: 36px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin: 0;
+  display: block;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  flex-shrink: 0;
 }
 
 .calculate-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(190, 17, 40, 0.3);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
 }
 
 .calculate-btn:active {
@@ -319,8 +360,8 @@
   }
   
   .form-row-group {
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    gap: 10px;
   }
   
   .amount-value {
@@ -333,6 +374,20 @@
   
   .result-value {
     font-size: 16px;
+  }
+
+  .bottom-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .calculate-btn {
+    margin-top: 8px;
+  }
+
+  .form-row-group {
+    gap: 8px;
   }
 }
 
@@ -347,7 +402,7 @@
   }
   
   .form-section {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   
   .amount-value {
@@ -357,5 +412,21 @@
   .calculate-btn {
     height: 42px;
     font-size: 15px;
+    width: 100px;
+  }
+
+  .bottom-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .detail-text {
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .form-row-group {
+    gap: 6px;
   }
 }

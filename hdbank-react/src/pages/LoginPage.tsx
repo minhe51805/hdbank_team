@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './LoginPage.css';
 import { loginApi } from '../utils';
 
@@ -12,7 +13,9 @@ const LoginPage: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -49,14 +52,55 @@ const LoginPage: React.FC = () => {
     
     if (validateForm()) {
       try {
+        setIsLoading(true);
+        
+        // Call backend login API
         const result = await loginApi(formData.username.trim(), formData.password);
-        // store customerId for later use (chat/plan)
+        
+        // Create user object compatible with AuthContext
+        const userData = {
+          id: result.customerId,
+          customerId: result.customerId,
+          username: result.username,
+          email: `${result.username}@hdbank.com.vn`,
+          phone: '0901234567',
+          status: 'active',
+          segment: 'family',
+          age: 35,
+          income: 25000000,
+          balance: 15750000,
+          passwordChanged: true,
+          lastLogin: new Date().toISOString()
+        };
+        
+        // Store token and user data for AuthContext compatibility
+        localStorage.setItem('hdbank_token', 'fake_token_' + Date.now());
+        localStorage.setItem('hdbank_user', JSON.stringify(userData));
+        
+        // Store customerId for later use (chat/plan) - maintain compatibility
         localStorage.setItem('customerId', String(result.customerId));
         localStorage.setItem('username', String(result.username));
-        // Điều hướng về trang chủ và bật flag hiển thị promo ngay
+        
+        // Use AuthContext login method with fake response format
+        const authResponse = {
+          success: true,
+          user: userData,
+          token: localStorage.getItem('hdbank_token'),
+          requirePasswordChange: false
+        };
+        
+        // Manually update AuthContext state
+        // Note: We can't call login() because it expects different API format
+        // So we'll just refresh the page to trigger AuthContext initialization
+        
+        // Set promo flag and navigate
         localStorage.setItem('forcePromo','1');
-        navigate('/');
+        
+        // Force page refresh to initialize AuthContext with new localStorage data
+        window.location.href = '/';
+        
       } catch (err: any) {
+        setIsLoading(false);
         alert(String(err?.message ?? 'Đăng nhập thất bại'));
       }
     }
@@ -151,8 +195,8 @@ const LoginPage: React.FC = () => {
                 </Link>
               </div>
 
-              <button type="submit" className="login-btn">
-                Đăng nhập
+              <button type="submit" className="login-btn" disabled={isLoading}>
+                {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </button>
 
               <div className="login-divider">

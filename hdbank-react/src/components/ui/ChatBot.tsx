@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatAPI from '../../utils/chatAPI';
+import { useChat } from '../../contexts/ChatContext';
+import { BankingPersonality, bankingPersonalities } from './PersonalitySelector';
 import './ChatBot.css';
 
 interface Message { 
@@ -8,60 +10,70 @@ interface Message {
   isTyping?: boolean;
 }
 
-interface BankingPersonality {
-  id: string;
-  name: string;
-  description: string;
-  prompt: string;
-  initialMessage: string;
-  emoji: string;
-  color: string;
-}
-
-const bankingPersonalities: BankingPersonality[] = [
-  {
-    id: "mentor",
-    name: "Mentor",
-    description: "Lịch sự, chuyên nghiệp, giải thích từng bước rõ ràng",
-    prompt: "Bạn là CashyBear – Gấu nhắc tiết kiệm, ví bạn thêm xịn. Phong cách Mentor: lịch sự, chuyên nghiệp, giải thích từng bước rõ ràng, định hướng hành động.",
-    initialMessage: "Chào bạn! Mình là CashyBear (Mentor). Bạn muốn đặt mục tiêu tiết kiệm nào để mình cùng lên kế hoạch 7/14 ngày trước nhé?",
-    emoji: "🧠",
-    color: "#be1128"
-  },
-  {
-    id: "angry_mom",
-    name: "Angry Mom",
-    description: "Nghiêm khắc, càu nhàu nhưng quan tâm, bảo vệ ví",
-    prompt: "Bạn là CashyBear – phong cách Angry Mom: thẳng, càu nhàu nhưng quan tâm; mục tiêu là bảo vệ ví người dùng.",
-    initialMessage: "Vào việc nhé! Cho mình biết mục tiêu và thời gian, mình chốt cho bạn kế hoạch 7/14 ngày trước, làm được thì đi tiếp.",
-    emoji: "🧹",
-    color: "#2563eb"
-  },
-  {
-    id: "banter",
-    name: "Banter",
-    description: "Gen Z vui vẻ, trêu nhẹ, emoji vừa đủ",
-    prompt: "Bạn là CashyBear – phong cách Banter: thân thiện, hài hước, trêu nhẹ để khích lệ thay đổi thói quen tiền bạc.",
-    initialMessage: "Hello bạn! CashyBear đây 😎 Cho mình biết mục tiêu tiền bạc của bạn nè, lên plan 7/14 ngày trước cho gọn.",
-    emoji: "😄",
-    color: "#16a34a"
-  }
-];
-
 const ChatBot: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // Use global chat context instead of local state
+  const {
+    messages,
+    setMessages,
+    sessionId,
+    setSessionId,
+    selectedPersonality,
+    setSelectedPersonality,
+    isOpen,
+    setIsOpen,
+    hasNewMessage,
+    setHasNewMessage,
+    busy,
+    setBusy,
+    typingMessageIndex,
+    setTypingMessageIndex,
+    showPersonalities,
+    setShowPersonalities,
+    connectionStatus,
+    setConnectionStatus
+  } = useChat();
+
   const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [sessionId, setSessionId] = useState<string>("");
-  const [hasNewMessage, setHasNewMessage] = useState(false);
-  const [typingMessageIndex, setTypingMessageIndex] = useState<number | null>(null);
-  const [selectedPersonality, setSelectedPersonality] = useState<BankingPersonality | null>(null);
-  const [showPersonalities, setShowPersonalities] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'failed'>('checking');
+
+  // Helper function to emit plan update events
+  const emitPlanUpdateEvent = (messageContent: string) => {
+    // Check if the message indicates a plan update/acceptance
+    const planUpdateKeywords = [
+      'kế hoạch đã được tạo',
+      'plan đã được tạo', 
+      'đã chấp nhận',
+      'kế hoạch mới',
+      'plan mới',
+      'cập nhật kế hoạch',
+      'tiết kiệm thành công',
+      'hoàn thành mục tiêu',
+      'đã lưu kế hoạch',
+      'chấp nhận kế hoạch',
+      'xác nhận kế hoạch',
+      'plan được lưu',
+      'kế hoạch tiết kiệm',
+      'mục tiêu đã được',
+      'đã tạo plan'
+    ];
+    
+    const hasKeyword = planUpdateKeywords.some(keyword => 
+      messageContent.toLowerCase().includes(keyword.toLowerCase())
+    );
+    
+    if (hasKeyword) {
+      console.log('🔄 Plan update detected, emitting refresh event');
+      // Emit custom event to notify other components
+      window.dispatchEvent(new CustomEvent('hdbank:planUpdate', {
+        detail: { timestamp: new Date(), source: 'chatbot' }
+      }));
+    }
+  };
 
   useEffect(() => {
-    setSessionId(crypto.randomUUID());
+    // Only create new session if one doesn't exist
+    if (!sessionId) {
+      setSessionId(crypto.randomUUID());
+    }
     
     // Test connection to n8n API
     const testConnection = async () => {
@@ -193,6 +205,9 @@ const ChatBot: React.FC = () => {
         return newMessages;
       });
       
+      // Check if this message indicates a plan update and emit event
+      emitPlanUpdateEvent(apiResponse);
+      
       setTypingMessageIndex(aiMessageIndex);
       
       if (!isOpen) {
@@ -248,9 +263,11 @@ const ChatBot: React.FC = () => {
           </svg>
         ) : (
           <>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+            <img 
+              src="/assets/images/iconchatbot/chatbot.png" 
+              alt="ChatBot"
+              style={{width: '24px', height: '24px', objectFit: 'contain'}}
+            />
             {hasNewMessage && <div className="hdbank-notification-dot"></div>}
           </>
         )}
@@ -262,7 +279,13 @@ const ChatBot: React.FC = () => {
           <div className="hdbank-personality-selection">
             <div className="hdbank-chat-header">
               <div className="hdbank-chat-info">
-                <div className="hdbank-logo">HD</div>
+                <div className="hdbank-logo">
+                  <img 
+                    src="/assets/images/iconchatbot/chatbot.png" 
+                    alt="HDBank Assistant"
+                    style={{width: '32px', height: '32px', objectFit: 'contain'}}
+                  />
+                </div>
                 <div>
                   <div className="hdbank-chat-title">HDBank Assistant</div>
                   <div className="hdbank-chat-status">Chọn trợ lý phù hợp</div>
@@ -285,7 +308,17 @@ const ChatBot: React.FC = () => {
                   onClick={() => selectPersonality(personality)}
                   style={{ borderLeftColor: personality.color }}
                 >
-                  <div className="hdbank-personality-emoji">{personality.emoji}</div>
+                  <div className="hdbank-personality-emoji">
+                    {personality.iconPath ? (
+                      <img 
+                        src={personality.iconPath} 
+                        alt={personality.name}
+                        style={{width: '24px', height: '24px', objectFit: 'contain'}}
+                      />
+                    ) : (
+                      personality.emoji
+                    )}
+                  </div>
                   <div className="hdbank-personality-content">
                     <div className="hdbank-personality-name">{personality.name}</div>
                     <div className="hdbank-personality-description">{personality.description}</div>
@@ -302,7 +335,15 @@ const ChatBot: React.FC = () => {
                   className="hdbank-avatar" 
                   style={{ backgroundColor: selectedPersonality?.color }}
                 >
-                  {selectedPersonality?.emoji || 'HD'}
+                  {selectedPersonality?.iconPath ? (
+                    <img 
+                      src={selectedPersonality.iconPath} 
+                      alt={selectedPersonality.name}
+                      style={{width: '24px', height: '24px', objectFit: 'contain'}}
+                    />
+                  ) : (
+                    selectedPersonality?.emoji || 'HD'
+                  )}
                 </div>
                 <div>
                   <div className="hdbank-chat-title">
