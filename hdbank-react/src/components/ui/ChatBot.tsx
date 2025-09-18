@@ -264,9 +264,9 @@ const ChatBot: React.FC = () => {
         ) : (
           <>
             <img 
-              src="/assets/images/iconchatbot/chatbot.png" 
+              src="/assets/gif/chatbot.gif" 
               alt="ChatBot"
-              style={{width: '24px', height: '24px', objectFit: 'contain'}}
+              style={{width: '96px', height: '96px', objectFit: 'contain'}}
             />
             {hasNewMessage && <div className="hdbank-notification-dot"></div>}
           </>
@@ -281,9 +281,9 @@ const ChatBot: React.FC = () => {
               <div className="hdbank-chat-info">
                 <div className="hdbank-logo">
                   <img 
-                    src="/assets/images/iconchatbot/chatbot.png" 
+                    src="/assets/gif/chatbot.gif" 
                     alt="HDBank Assistant"
-                    style={{width: '32px', height: '32px', objectFit: 'contain'}}
+                    style={{width: '64px', height: '64px', objectFit: 'contain'}}
                   />
                 </div>
                 <div>
@@ -339,7 +339,7 @@ const ChatBot: React.FC = () => {
                     <img 
                       src={selectedPersonality.iconPath} 
                       alt={selectedPersonality.name}
-                      style={{width: '24px', height: '24px', objectFit: 'contain'}}
+                      style={{width: '56px', height: '56px', objectFit: 'contain'}}
                     />
                   ) : (
                     selectedPersonality?.emoji || 'HD'

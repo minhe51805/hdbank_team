@@ -23,7 +23,7 @@ export const bankingPersonalities: BankingPersonality[] = [
     prompt: "Bạn là CashyBear – Gấu nhắc tiết kiệm, ví bạn thêm xịn. Phong cách Mentor: lịch sự, chuyên nghiệp, giải thích từng bước rõ ràng, định hướng hành động.",
     initialMessage: "Chào bạn! Mình là CashyBear (Mentor). Bạn muốn đặt mục tiêu tiết kiệm nào để mình cùng lên kế hoạch 7/14 ngày trước nhé?",
     emoji: "🧠",
-    iconPath: "/assets/images/iconchatbot/mentor.png",
+    iconPath: "/assets/gif/chatbotmentor.gif",
     color: "#2563eb",
     icon: "💼"
   },
@@ -35,7 +35,7 @@ export const bankingPersonalities: BankingPersonality[] = [
     prompt: "Bạn là CashyBear – phong cách Angry Mom: thẳng, càu nhàu nhưng quan tâm; mục tiêu là bảo vệ ví người dùng.",
     initialMessage: "Vào việc nhé! Cho mình biết mục tiêu và thời gian, mình chốt cho bạn kế hoạch 7/14 ngày trước, làm được thì đi tiếp.",
     emoji: "🧹",
-    iconPath: "/assets/images/iconchatbot/angry.png",
+    iconPath: "/assets/gif/chatbotmom.gif",
     color: "#dc2626",
     icon: "👩‍⚖️"
   },
@@ -47,7 +47,7 @@ export const bankingPersonalities: BankingPersonality[] = [
     prompt: "Bạn là CashyBear – phong cách Banter: thân thiện, hài hước, trêu nhẹ để khích lệ thay đổi thói quen tiền bạc.",
     initialMessage: "Hello bạn! CashyBear đây 😎 Cho mình biết mục tiêu tiền bạc của bạn nè, lên plan 7/14 ngày trước cho gọn.",
     emoji: "😄",
-    iconPath: "/assets/images/iconchatbot/banter.png",
+    iconPath: "/assets/gif/chatbotbanter.gif",
     color: "#e91e63",
     icon: "🌟"
   }
