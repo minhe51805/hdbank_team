@@ -1,7 +1,7 @@
 (async () => {
   const base = 'http://127.0.0.1:4000';
   const body = {
-    customerId: 1,
+    customerId: 66,
     sessionId: 'sess-123',
     persona: 'Mentor',
     modelVersion: 'gemini-1.5-pro',

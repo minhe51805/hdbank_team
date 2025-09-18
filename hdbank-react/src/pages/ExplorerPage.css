@@ -10,6 +10,10 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  background: #0b0f1a;
+  color: #fff;
+  padding: 16px;
+  border-radius: 16px;
 }
 
 .explorer-title {
@@ -23,18 +27,18 @@
 }
 
 .explorer-input {
-  padding: 8px 10px;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  min-width: 120px;
+  padding: 10px 12px;
+  border: 1px solid #263043;
+  border-radius: 10px;
+  min-width: 140px;
 }
 
 .explorer-button {
-  padding: 8px 14px;
-  background: #0a7cff;
+  padding: 10px 16px;
+  background: #1677ff;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -61,13 +65,13 @@
 
 .explorer-table {
   display: grid;
-  gap: 6px;
+  gap: 10px;
 }
 
 .explorer-thead,
 .explorer-row {
   display: grid;
-  grid-template-columns: 90px 1fr 140px 160px 120px 220px 220px 160px;
+  grid-template-columns: 90px 1fr 140px 120px 220px 220px 160px 220px;
   align-items: center;
   gap: 10px;
 }
@@ -79,10 +83,10 @@
 }
 
 .explorer-row {
-  padding: 12px 10px;
-  border: 1px solid #d0d7de;
-  border-radius: 12px;
-  background: white;
+  padding: 16px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
 }
 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }

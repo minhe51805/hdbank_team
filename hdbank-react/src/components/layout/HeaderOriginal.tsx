@@ -52,6 +52,9 @@ const HeaderOriginal: React.FC = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/vi/investor">Nhà đầu tư</Link>
               </li>
+              <li className="nav-item">
+                {null}
+              </li>
             </ul>
 
             {/* Search Box */}
@@ -173,6 +176,11 @@ const HeaderOriginal: React.FC = () => {
                 <li className="active">
                   <div className="accordion-title">
                     <Link to="/vi/investor">Nhà đầu tư</Link>
+                  </div>
+                </li>
+                <li className="active">
+                  <div className="accordion-title">
+                    {null}
                   </div>
                 </li>
               </ul>

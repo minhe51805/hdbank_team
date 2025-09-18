@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './ExplorerPage.css';
 
 type AdviceEvent = {
@@ -25,21 +26,39 @@ type LogsResponse = {
 
 const apiBase = 'http://127.0.0.1:4000';
 
+type QueryParams = {
+  from: string;
+  to: string;
+  customerId: string;
+  stage: string;
+  fromTime: string;
+  toTime: string;
+};
+
+type SearchMode = 'all' | 'customer' | 'tx' | 'block' | 'stage' | 'date';
+
 export default function ExplorerPage() {
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<LogsResponse | null>(null);
-  const [query, setQuery] = useState({ from: '', to: '' });
+  const [query, setQuery] = useState<QueryParams>({ from: '', to: '', customerId: '', stage: '', fromTime: '', toTime: '' });
+  const [mode, setMode] = useState<SearchMode>('all');
+  const [term, setTerm] = useState<string>('');
 
   const events = useMemo(() => data?.events ?? [], [data]);
 
-  async function loadLogs() {
+  async function fetchLogsFor(q: QueryParams) {
     try {
       setLoading(true);
       setError(null);
       const params = new URLSearchParams();
-      if (query.from) params.set('from', query.from);
-      if (query.to) params.set('to', query.to);
+      if (q.from) params.set('from', q.from);
+      if (q.to) params.set('to', q.to);
+      if (q.customerId) params.set('customerId', q.customerId);
+      if (q.stage) params.set('stage', q.stage);
+      if (q.fromTime) params.set('fromTimeSec', String(Math.floor(new Date(q.fromTime).getTime()/1000)));
+      if (q.toTime) params.set('toTimeSec', String(Math.floor(new Date(q.toTime).getTime()/1000)));
       const res = await fetch(`${apiBase}/advice/logs?${params.toString()}`);
       const json = (await res.json()) as LogsResponse;
       setData(json);
@@ -50,30 +69,90 @@ export default function ExplorerPage() {
     }
   }
 
+  async function loadLogs() {
+    return fetchLogsFor(query);
+  }
+
+  function loadMine() {
+    const cid = localStorage.getItem('customerId') || '';
+    if (!cid) {
+      setError('Bạn chưa đăng nhập');
+      return;
+    }
+    setMode('customer');
+    setTerm(cid);
+    doSearch('customer', cid);
+  }
+
   useEffect(() => {
+    // preload from URL query (e.g., /explorer?customerId=66)
+    try {
+      const p = new URLSearchParams(location.search || '');
+      const urlCustomer = p.get('customerId') || '';
+      const urlTx = p.get('txHash') || '';
+      const urlBlock = p.get('block') || '';
+      const urlStage = p.get('stage') || '';
+      const urlDate = p.get('date') || '';
+      if (urlTx) { setMode('tx'); setTerm(urlTx); doSearch('tx', urlTx); return; }
+      if (urlCustomer) { setMode('customer'); setTerm(urlCustomer); doSearch('customer', urlCustomer); return; }
+      if (urlBlock) { setMode('block'); setTerm(urlBlock); doSearch('block', urlBlock); return; }
+      if (urlStage) { setMode('stage'); setTerm(urlStage); doSearch('stage', urlStage); return; }
+      if (urlDate) { setMode('date'); setTerm(urlDate); doSearch('date', urlDate); return; }
+    } catch {}
     loadLogs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.search]);
+
+  function doSearch(m: SearchMode, value: string) {
+    const params = new URLSearchParams();
+    if (m === 'customer') params.set('customerId', value);
+    if (m === 'tx') params.set('txHash', value);
+    if (m === 'block') params.set('block', value);
+    if (m === 'stage') params.set('stage', value);
+    if (m === 'date') params.set('date', value);
+    setLoading(true);
+    setError(null);
+    fetch(`${apiBase}/advice/logs?${params.toString()}`)
+      .then((r) => r.json())
+      .then((j) => setData(j))
+      .catch((e) => setError(String(e?.message || e)))
+      .finally(() => setLoading(false));
+  }
 
   return (
     <div className="explorer-wrapper">
       <div className="explorer-header">
-        <div className="explorer-title">Blockchain Explorer</div>
+        <div className="explorer-title">CashyBear AdviceLog Blockchain Explorer</div>
         <div className="explorer-controls">
-          <input
-            className="explorer-input"
-            placeholder="from block"
-            value={query.from}
-            onChange={(e) => setQuery((q) => ({ ...q, from: e.target.value }))}
-          />
-          <input
-            className="explorer-input"
-            placeholder="to block"
-            value={query.to}
-            onChange={(e) => setQuery((q) => ({ ...q, to: e.target.value }))}
-          />
-          <button className="explorer-button" onClick={loadLogs} disabled={loading}>
-            {loading ? 'Đang tải...' : 'Refresh'}
+          <select className="explorer-input" value={mode} onChange={(e)=>setMode(e.target.value as SearchMode)}>
+            <option value="all">All</option>
+            <option value="customer">Customer ID</option>
+            <option value="tx">Tx Hash</option>
+            <option value="block">Block</option>
+            <option value="stage">Stage</option>
+            <option value="date">Date</option>
+          </select>
+          {mode === 'stage' ? (
+            <select className="explorer-input" value={term} onChange={(e)=>setTerm(e.target.value)}>
+              <option value="">stage (all)</option>
+              <option value="chat_reply">chat_reply</option>
+              <option value="plan_proposed">plan_proposed</option>
+              <option value="plan_accepted">plan_accepted</option>
+            </select>
+          ) : (
+            <input
+              className="explorer-input"
+              type={mode === 'date' ? 'date' : 'text'}
+              placeholder={mode==='all' ? 'Search (leave empty to view all)' : (`Enter ${mode}`)}
+              value={term}
+              onChange={(e)=>setTerm(e.target.value)}
+            />
+          )}
+          <button className="explorer-button" onClick={()=>doSearch(mode, term.trim())} disabled={loading}>
+            {loading ? '...' : 'Search'}
+          </button>
+          <button className="explorer-button" onClick={loadMine} disabled={loading}>
+            {loading ? '...' : 'My Logs'}
           </button>
         </div>
       </div>
@@ -90,22 +169,24 @@ export default function ExplorerPage() {
           <div>Block</div>
           <div>Tx Hash</div>
           <div>Stage</div>
-          <div>Model</div>
           <div>Persona</div>
           <div>Customer</div>
           <div>Session</div>
           <div>Block Time</div>
+          <div>Nonce</div>
         </div>
         {events.map((ev) => (
           <div key={ev.txHash} className="explorer-row">
             <div>{ev.blockNumber ?? '—'}</div>
-            <div className="mono hash" title={ev.txHash}>{short(ev.txHash)}</div>
+            <div className="mono hash" title={ev.txHash}>
+              <a href={`${apiBase}/advice/tx?hash=${ev.txHash}`} target="_blank" rel="noreferrer">{short(ev.txHash)}</a>
+            </div>
             <div>{ev.args.stage}</div>
-            <div>{ev.args.modelVersion}</div>
             <div>{ev.args.persona}</div>
             <div className="mono" title={ev.args.customerHash}>{short(ev.args.customerHash)}</div>
             <div className="mono" title={ev.args.sessionHash}>{short(ev.args.sessionHash)}</div>
             <div>{ev.args.blockTime ? new Date(Number(ev.args.blockTime) * 1000).toLocaleString() : '—'}</div>
+            <div className="mono" title={ev.args.nonce}>{short(ev.args.nonce)}</div>
           </div>
         ))}
       </div>
@@ -122,11 +203,9 @@ function short(x: string, n = 10) {
 
 function VerifyPanel() {
   const [stage, setStage] = useState('chat_reply');
-  const [inputText, setInputText] = useState('Tôi muốn tiết kiệm 20 triệu trong 6 tháng');
-  const [outputText, setOutputText] = useState('Bạn nên gửi tiết kiệm mỗi ngày 120k');
-  const [customerId, setCustomerId] = useState('1');
-  const [sessionId, setSessionId] = useState('sess-123');
-  const [result, setResult] = useState<any>(null);
+  const [customerId, setCustomerId] = useState(() => localStorage.getItem('customerId') || '');
+  const [date, setDate] = useState(''); // yyyy-mm-dd
+  const [events, setEvents] = useState<AdviceEvent[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -134,27 +213,25 @@ function VerifyPanel() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/advice/logs`);
+      const params = new URLSearchParams();
+      if (customerId) params.set('customerId', customerId);
+      if (stage) params.set('stage', stage);
+      if (date) params.set('date', date);
+      const res = await fetch(`${apiBase}/advice/logs?${params.toString()}`);
       const json = (await res.json()) as LogsResponse;
-      // Compute local hashes
-      const inputHash = keccak256Utf8(inputText);
-      const outputHash = keccak256Utf8(outputText);
-      const customerHash = keccak256Utf8(String(customerId));
-      const sessionHash = keccak256Utf8(String(sessionId));
-      // Try to find a matching event by stage and hashes
-      const match = (json.events || []).find((ev) =>
-        ev.args.stage === stage &&
-        eq(ev.args.inputHash, inputHash) &&
-        eq(ev.args.outputHash, outputHash) &&
-        eq(ev.args.customerHash, customerHash) &&
-        eq(ev.args.sessionHash, sessionHash)
-      );
-      setResult({ inputHash, outputHash, customerHash, sessionHash, matchTx: match?.txHash || null });
+      setEvents(json.events || []);
     } catch (e: any) {
       setError(String(e?.message || e));
     } finally {
       setLoading(false);
     }
+  }
+
+  function copyFirst() {
+    if (!events || events.length === 0) return;
+    const ev = events[0];
+    const payload = { txHash: ev.txHash, blockNumber: ev.blockNumber, ...ev.args };
+    navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
   }
 
   return (
@@ -168,33 +245,30 @@ function VerifyPanel() {
           <option value="plan_accepted">plan_accepted</option>
         </select>
 
-        <label>Input</label>
-        <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} />
-
-        <label>Output</label>
-        <textarea value={outputText} onChange={(e) => setOutputText(e.target.value)} />
-
         <label>Customer ID</label>
-        <input value={customerId} onChange={(e) => setCustomerId(e.target.value)} />
+        <input value={customerId} onChange={(e) => setCustomerId(e.target.value)} placeholder="vd: 66" />
 
-        <label>Session ID</label>
-        <input value={sessionId} onChange={(e) => setSessionId(e.target.value)} />
+        <label>Block date</label>
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
 
         <div />
         <button className="explorer-button" onClick={verify} disabled={loading}>
-          {loading ? 'Đang kiểm tra...' : 'Verify'}
+          {loading ? 'Đang tìm...' : 'Find Tx'}
         </button>
+        <button className="explorer-button" onClick={copyFirst} disabled={!events || events.length === 0}>Copy verification proof</button>
       </div>
 
-      {result ? (
+      {events && events.length > 0 ? (
         <div className="verify-result">
-          <div><b>inputHash</b>: <code>{result.inputHash}</code></div>
-          <div><b>outputHash</b>: <code>{result.outputHash}</code></div>
-          <div><b>customerHash</b>: <code>{result.customerHash}</code></div>
-          <div><b>sessionHash</b>: <code>{result.sessionHash}</code></div>
-          <div><b>matchTx</b>: <code>{result.matchTx || 'không tìm thấy'}</code></div>
+          {events.slice(0,5).map((ev) => (
+            <div key={ev.txHash} style={{marginBottom:8}}>
+              <div><b>Tx</b>: <a href={`${apiBase}/advice/tx?hash=${ev.txHash}`} target="_blank" rel="noreferrer">{ev.txHash}</a></div>
+              <div><b>Time</b>: {ev.args.blockTime ? new Date(Number(ev.args.blockTime) * 1000).toLocaleString() : '—'}</div>
+            </div>
+          ))}
         </div>
       ) : null}
+      {events && events.length === 0 ? <div className="verify-result">Không tìm thấy giao dịch phù hợp.</div> : null}
       {error ? <div className="explorer-error">{error}</div> : null}
     </div>
   );

@@ -84,6 +84,13 @@ const PersonalPage: React.FC = () => {
           <div style={{background:'#fff7f7',borderRadius:12,padding:16}}>
             <div style={{fontWeight:600,marginBottom:10}}>Gợi ý từ CashyBear</div>
             <div>Hãy đặt mục tiêu nhỏ theo ngày để duy trì thói quen. 💪</div>
+            <div style={{marginTop:12,display:'flex',gap:8,flexWrap:'wrap'}}>
+              <button onClick={()=>{
+                const cid = localStorage.getItem('customerId') || '';
+                const url = cid? `/explorer?customerId=${encodeURIComponent(cid)}&stage=plan_accepted` : '/explorer';
+                window.open(url, '_blank');
+              }} style={{padding:'8px 12px',borderRadius:8,border:'1px solid #d0d7de',background:'#fff',cursor:'pointer'}}>View on Blockchain Explorer</button>
+            </div>
           </div>
         </section>
 
