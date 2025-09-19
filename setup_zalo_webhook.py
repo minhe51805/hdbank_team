@@ -9,7 +9,7 @@ import json
 import sys
 
 # Zalo Bot Configuration
-BOT_TOKEN = "4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp"
+BOT_TOKEN = "APP_KEY"
 ZALO_API_BASE = "https://bot-api.zapps.me/bot"
 
 def set_webhook(webhook_url: str) -> dict:
