@@ -1,0 +1,120 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "AdviceLog",
+  "sourceName": "contracts/AdviceLog.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "inputHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "outputHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "modelVersion",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "persona",
+          "type": "string"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "customerHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "sessionHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "stage",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "blockTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "nonce",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AdviceRecorded",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "inputHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "outputHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "modelVersion",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "persona",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "customerHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "sessionHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "stage",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "nonce",
+          "type": "bytes32"
+        }
+      ],
+      "name": "recordAdvice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610270806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c80638d3d52bd14610030575b600080fd5b61004361003e3660046100e5565b610045565b005b848a8c7f0d55d88036abc009c389ccb8df82f28980ca4a77887701ee5614824678a23bf78c8c8c8c8b8b8b428c604051610087999897969594939291906101df565b60405180910390a45050505050505050505050565b60008083601f8401126100ae57600080fd5b50813567ffffffffffffffff8111156100c657600080fd5b6020830191508360208285010111156100de57600080fd5b9250929050565b60008060008060008060008060008060006101008c8e03121561010757600080fd5b8b359a5060208c0135995067ffffffffffffffff8060408e0135111561012c57600080fd5b61013c8e60408f01358f0161009c565b909a50985060608d013581101561015257600080fd5b6101628e60608f01358f0161009c565b909850965060808d0135955060a08d0135945060c08d013581101561018657600080fd5b506101978d60c08e01358e0161009c565b819450809350505060e08c013590509295989b509295989b9093969950565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60c0815260006101f360c083018b8d6101b6565b8281036020840152610206818a8c6101b6565b905087604084015282810360608401526102218187896101b6565b6080840195909552505060a0015297965050505050505056fea264697066735822122068caa897daa85712d3079a7f75f72a325ee3d222b9afedf3c3eccdb361cf607b64736f6c63430008180033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c80638d3d52bd14610030575b600080fd5b61004361003e3660046100e5565b610045565b005b848a8c7f0d55d88036abc009c389ccb8df82f28980ca4a77887701ee5614824678a23bf78c8c8c8c8b8b8b428c604051610087999897969594939291906101df565b60405180910390a45050505050505050505050565b60008083601f8401126100ae57600080fd5b50813567ffffffffffffffff8111156100c657600080fd5b6020830191508360208285010111156100de57600080fd5b9250929050565b60008060008060008060008060008060006101008c8e03121561010757600080fd5b8b359a5060208c0135995067ffffffffffffffff8060408e0135111561012c57600080fd5b61013c8e60408f01358f0161009c565b909a50985060608d013581101561015257600080fd5b6101628e60608f01358f0161009c565b909850965060808d0135955060a08d0135945060c08d013581101561018657600080fd5b506101978d60c08e01358e0161009c565b819450809350505060e08c013590509295989b509295989b9093969950565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60c0815260006101f360c083018b8d6101b6565b8281036020840152610206818a8c6101b6565b905087604084015282810360608401526102218187896101b6565b6080840195909552505060a0015297965050505050505056fea264697066735822122068caa897daa85712d3079a7f75f72a325ee3d222b9afedf3c3eccdb361cf607b64736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
