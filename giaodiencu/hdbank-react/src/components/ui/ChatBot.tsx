@@ -285,7 +285,7 @@ const ChatBot: React.FC = () => {
               <div className="hdbank-chat-info">
                 <div className="hdbank-logo">HD</div>
                 <div>
-                  <div className="hdbank-chat-title">HDBank Assistant</div>
+                  <div className="hdbank-chat-title">CashyBear</div>
                   <div className="hdbank-chat-status">Chọn trợ lý phù hợp</div>
                 </div>
               </div>
@@ -327,7 +327,7 @@ const ChatBot: React.FC = () => {
                 </div>
                 <div>
                   <div className="hdbank-chat-title">
-                    {selectedPersonality?.name || 'HDBank Assistant'}
+                    {selectedPersonality?.name || 'CashyBear'}
                   </div>
                   <div className="hdbank-chat-status">Online • Hỗ trợ 24/7</div>
                 </div>
@@ -420,7 +420,7 @@ const ChatBot: React.FC = () => {
             </div>
             
             <div className="hdbank-chat-footer">
-              HDBank Assistant • Session: {sessionId ? sessionId.slice(0,6) : '...'} 
+              CashyBear • Session: {sessionId ? sessionId.slice(0,6) : '...'} 
               <span className={`connection-status ${connectionStatus}`}>
                 {connectionStatus === 'checking' && '🔄 Connecting...'}
                 {connectionStatus === 'connected' && '🟢 Online'}  

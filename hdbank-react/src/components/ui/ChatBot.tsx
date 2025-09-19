@@ -129,10 +129,19 @@ const ChatBot: React.FC = () => {
   }) => {
     const [displayText, setDisplayText] = useState("");
     const [isComplete, setIsComplete] = useState(false);
+    const onCompleteRef = useRef<(() => void) | undefined>(onComplete);
+    // Freeze the text at mount time to avoid restarting when parent re-renders
+    const initialTextRef = useRef<string>(text);
+
+    // Keep a stable reference to the latest onComplete without retriggering the typing effect
+    useEffect(() => {
+      onCompleteRef.current = onComplete;
+    }, [onComplete]);
 
     useEffect(() => {
-      if (text === "..." || text === "Đang soạn tin nhắn") {
-        setDisplayText(text);
+      const fullText = initialTextRef.current;
+      if (fullText === "..." || fullText === "Đang soạn tin nhắn") {
+        setDisplayText(fullText);
         setIsComplete(true);
         return;
       }
@@ -142,18 +151,19 @@ const ChatBot: React.FC = () => {
       let index = 0;
 
       const timer = setInterval(() => {
-        if (index < text.length) {
-          setDisplayText(text.slice(0, index + 1));
+        if (index < fullText.length) {
+          setDisplayText(fullText.slice(0, index + 1));
           index++;
         } else {
           setIsComplete(true);
-          onComplete?.();
+          // Call the latest onComplete without causing the effect to restart
+          onCompleteRef.current?.();
           clearInterval(timer);
         }
       }, speed);
 
       return () => clearInterval(timer);
-    }, [text, speed, onComplete]);
+    }, [speed]);
 
     return (
       <div 
@@ -226,7 +236,7 @@ const ChatBot: React.FC = () => {
       
       setTypingMessageIndex(aiMessageIndex);
     } finally {
-      setBusy(false);
+      // Keep busy=true until typewriter completes to avoid input interactions causing resets
     }
   }
 
@@ -282,12 +292,12 @@ const ChatBot: React.FC = () => {
                 <div className="hdbank-logo">
                   <img 
                     src="/assets/gif/chatbot.gif" 
-                    alt="HDBank Assistant"
+                    alt="CashyBear"
                     style={{width: '64px', height: '64px', objectFit: 'contain'}}
                   />
                 </div>
                 <div>
-                  <div className="hdbank-chat-title">HDBank Assistant</div>
+                  <div className="hdbank-chat-title">CashyBear</div>
                   <div className="hdbank-chat-status">Chọn trợ lý phù hợp</div>
                 </div>
               </div>
@@ -347,7 +357,7 @@ const ChatBot: React.FC = () => {
                 </div>
                 <div>
                   <div className="hdbank-chat-title">
-                    {selectedPersonality?.name || 'HDBank Assistant'}
+                    {selectedPersonality?.name || 'CashyBear'}
                   </div>
                   <div className="hdbank-chat-status">Online • Hỗ trợ 24/7</div>
                 </div>
@@ -405,6 +415,7 @@ const ChatBot: React.FC = () => {
                             return updated;
                           });
                           setTypingMessageIndex(null);
+                          setBusy(false);
                         }}
                       />
                     ) : (
@@ -440,7 +451,7 @@ const ChatBot: React.FC = () => {
             </div>
             
             <div className="hdbank-chat-footer">
-              HDBank Assistant • Session: {sessionId ? sessionId.slice(0,6) : '...'} 
+              CashyBear • Session: {sessionId ? sessionId.slice(0,6) : '...'} 
               <span className={`connection-status ${connectionStatus}`}>
                 {connectionStatus === 'checking' && '🔄 Connecting...'}
                 {connectionStatus === 'connected' && '🟢 Online'}  

@@ -16,7 +16,7 @@ import logging
 import time
 
 # Zalo Bot Configuration
-ZALO_BOT_TOKEN = "4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp"
+ZALO_BOT_TOKEN = "23552880447759231:OTVNZPZVefKdaCgBtVBDAqJzOqwLHYKSSvjgEKyqIiOccBRjogKNLFhIIUwQxcwa"
 ZALO_API_BASE = "https://bot-api.zapps.me/bot"
 CASHYBEAR_API_BASE = "http://127.0.0.1:8010"
 
@@ -120,7 +120,19 @@ async def send_zalo_message(chat_id: str, text: str) -> bool:
         logger.info(f"📤 Sending to Zalo (zapps): {url}")
         logger.info(f"📦 Payload: {json.dumps(payload, ensure_ascii=False)}")
 
-        response = requests.post(url, json=payload, headers=headers, timeout=10)
+        # Try normal TLS first
+        try:
+            response = requests.post(url, json=payload, headers=headers, timeout=12)
+        except requests.exceptions.SSLError as ssl_err:
+            logger.warning(f"⚠️ SSL verify failed: {ssl_err}. Retrying with system CA fallback...")
+            # Retry with certifi CA bundle if available
+            try:
+                import certifi
+                response = requests.post(url, json=payload, headers=headers, timeout=12, verify=certifi.where())
+            except Exception as e2:
+                logger.warning(f"⚠️ certifi retry failed: {e2}. Last resort retry with verify=False")
+                response = requests.post(url, json=payload, headers=headers, timeout=12, verify=False)
+
         logger.info(f"📨 Response status: {response.status_code}")
         logger.info(f"📨 Response body: {response.text}")
 

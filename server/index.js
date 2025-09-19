@@ -326,8 +326,99 @@ async function main() {
       const adviceLog = getAdviceLog();
       const fromBlock = req.query.from ? Number(req.query.from) : 0;
       const toBlock = req.query.to ? Number(req.query.to) : 'latest';
+      const customerIdQ = req.query.customerId ? String(req.query.customerId) : null;
+      const sessionIdQ = req.query.sessionId ? String(req.query.sessionId) : null;
+      const txHashQ = req.query.txHash ? String(req.query.txHash).toLowerCase() : null;
+      const blockQ = req.query.block ? String(req.query.block) : null;
+      const stageQ = req.query.stage ? String(req.query.stage) : null;
+      const fromTimeSecQ = req.query.fromTimeSec ? Number(req.query.fromTimeSec) : null;
+      const toTimeSecQ = req.query.toTimeSec ? Number(req.query.toTimeSec) : null;
+      const dateQ = req.query.date ? String(req.query.date) : null; // accepts dd/mm/yyyy or yyyy-mm-dd
       const filter = adviceLog.filters.AdviceRecorded();
       const events = await adviceLog.queryFilter(filter, fromBlock, toBlock);
+      let out = events.map((ev) => ({
+        txHash: ev.transactionHash,
+        blockNumber: ev.blockNumber != null ? ev.blockNumber.toString() : null,
+        args: {
+          inputHash: ev.args.inputHash,
+          outputHash: ev.args.outputHash,
+          modelVersion: ev.args.modelVersion,
+          persona: ev.args.persona,
+          customerHash: ev.args.customerHash,
+          sessionHash: ev.args.sessionHash,
+          stage: ev.args.stage,
+          blockTime: ev.args.blockTime ? ev.args.blockTime.toString() : null,
+          nonce: ev.args.nonce
+        }
+      }));
+
+      // Optional in-memory filters (dev/local scale)
+      if (txHashQ) {
+        out = out.filter((e) => String(e.txHash).toLowerCase() === txHashQ);
+      }
+      if (blockQ) {
+        out = out.filter((e) => String(e.blockNumber) === String(blockQ));
+      }
+      if (customerIdQ) {
+        const target = hashStringToBytes32(String(customerIdQ));
+        out = out.filter((e) => String(e.args.customerHash).toLowerCase() === String(target).toLowerCase());
+      }
+      if (sessionIdQ) {
+        const target = hashStringToBytes32(String(sessionIdQ));
+        out = out.filter((e) => String(e.args.sessionHash).toLowerCase() === String(target).toLowerCase());
+      }
+      if (stageQ) {
+        out = out.filter((e) => String(e.args.stage) === stageQ);
+      }
+      // dateQ (single-day) → convert to from/to
+      let fts = fromTimeSecQ;
+      let tts = toTimeSecQ;
+      if (dateQ && (!fts || !tts)) {
+        try {
+          let y, m, d;
+          if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateQ)) {
+            const [dd, mm, yyyy] = dateQ.split('/');
+            y = Number(yyyy); m = Number(mm); d = Number(dd);
+          } else if (/^\d{4}-\d{2}-\d{2}$/.test(dateQ)) {
+            const [yyyy, mm, dd] = dateQ.split('-');
+            y = Number(yyyy); m = Number(mm); d = Number(dd);
+          }
+          if (y && m && d) {
+            const start = Math.floor(new Date(Date.UTC(y, m - 1, d, 0, 0, 0)).getTime() / 1000);
+            const end = Math.floor(new Date(Date.UTC(y, m - 1, d, 23, 59, 59)).getTime() / 1000);
+            fts = fts ?? start;
+            tts = tts ?? end;
+          }
+        } catch {}
+      }
+      if (fts != null) {
+        out = out.filter((e) => e.args.blockTime != null && Number(e.args.blockTime) >= Number(fromTimeSecQ));
+      }
+      if (tts != null) {
+        out = out.filter((e) => e.args.blockTime != null && Number(e.args.blockTime) <= Number(toTimeSecQ));
+      }
+
+      out = out.sort((a, b) => Number(b.blockNumber || 0) - Number(a.blockNumber || 0));
+      return res.json({ ok: true, address, events: out });
+    } catch (e) {
+      console.error('[advice/logs] error:', e);
+      return res.status(500).json({ error: String(e.message || e) });
+    }
+  });
+
+  // GET /advice/logs/by-customer?customerId=66
+  app.get('/advice/logs/by-customer', async (req, res) => {
+    try {
+      const customerId = req.query.customerId ? String(req.query.customerId) : null;
+      if (!customerId) return res.status(400).json({ error: 'Thiếu customerId' });
+      req.query.customerId = customerId; // reuse logic in /advice/logs
+      // Delegate by calling internal logic directly (duplicated for simplicity)
+      const adviceLog = getAdviceLog();
+      const fromBlock = req.query.from ? Number(req.query.from) : 0;
+      const toBlock = req.query.to ? Number(req.query.to) : 'latest';
+      const filter = adviceLog.filters.AdviceRecorded();
+      const events = await adviceLog.queryFilter(filter, fromBlock, toBlock);
+      const target = hashStringToBytes32(String(customerId));
       const out = events.map((ev) => ({
         txHash: ev.transactionHash,
         blockNumber: ev.blockNumber != null ? ev.blockNumber.toString() : null,
@@ -342,10 +433,81 @@ async function main() {
           blockTime: ev.args.blockTime ? ev.args.blockTime.toString() : null,
           nonce: ev.args.nonce
         }
-      })).sort((a, b) => b.blockNumber - a.blockNumber);
+      }))
+      .filter((e) => String(e.args.customerHash).toLowerCase() === String(target).toLowerCase())
+      .sort((a, b) => Number(b.blockNumber || 0) - Number(a.blockNumber || 0));
       return res.json({ ok: true, address, events: out });
     } catch (e) {
-      console.error('[advice/logs] error:', e);
+      console.error('[advice/logs/by-customer] error:', e);
+      return res.status(500).json({ error: String(e.message || e) });
+    }
+  });
+
+  // GET /advice/logs/by-session?sessionId=abc
+  app.get('/advice/logs/by-session', async (req, res) => {
+    try {
+      const sessionId = req.query.sessionId ? String(req.query.sessionId) : null;
+      if (!sessionId) return res.status(400).json({ error: 'Thiếu sessionId' });
+      const adviceLog = getAdviceLog();
+      const fromBlock = req.query.from ? Number(req.query.from) : 0;
+      const toBlock = req.query.to ? Number(req.query.to) : 'latest';
+      const filter = adviceLog.filters.AdviceRecorded();
+      const events = await adviceLog.queryFilter(filter, fromBlock, toBlock);
+      const target = hashStringToBytes32(String(sessionId));
+      const out = events.map((ev) => ({
+        txHash: ev.transactionHash,
+        blockNumber: ev.blockNumber != null ? ev.blockNumber.toString() : null,
+        args: {
+          inputHash: ev.args.inputHash,
+          outputHash: ev.args.outputHash,
+          modelVersion: ev.args.modelVersion,
+          persona: ev.args.persona,
+          customerHash: ev.args.customerHash,
+          sessionHash: ev.args.sessionHash,
+          stage: ev.args.stage,
+          blockTime: ev.args.blockTime ? ev.args.blockTime.toString() : null,
+          nonce: ev.args.nonce
+        }
+      }))
+      .filter((e) => String(e.args.sessionHash).toLowerCase() === String(target).toLowerCase())
+      .sort((a, b) => Number(b.blockNumber || 0) - Number(a.blockNumber || 0));
+      return res.json({ ok: true, address, events: out });
+    } catch (e) {
+      console.error('[advice/logs/by-session] error:', e);
+      return res.status(500).json({ error: String(e.message || e) });
+    }
+  });
+
+  // GET /advice/tx?hash=0x... -> basic tx details passthrough for local explorer link
+  app.get('/advice/tx', async (req, res) => {
+    try {
+      const { provider } = createChainProviderAndWallet();
+      const hash = String(req.query.hash || '');
+      if (!hash) return res.status(400).json({ error: 'Thiếu hash' });
+      const tx = await provider.getTransaction(hash);
+      if (!tx) return res.status(404).json({ error: 'Không tìm thấy giao dịch' });
+      const receipt = await provider.getTransactionReceipt(hash);
+      const out = {
+        hash: tx.hash,
+        blockNumber: tx.blockNumber != null ? String(tx.blockNumber) : null,
+        from: tx.from,
+        to: tx.to,
+        nonce: String(tx.nonce),
+        data: tx.data,
+        value: tx.value ? tx.value.toString() : '0',
+        gasPrice: tx.gasPrice ? tx.gasPrice.toString() : null,
+        gasLimit: tx.gasLimit ? tx.gasLimit.toString() : null,
+        status: receipt ? (receipt.status === 1 ? 'success' : 'failed') : 'pending',
+        logs: (receipt?.logs || []).map((l) => ({
+          address: l.address,
+          data: l.data,
+          topics: l.topics,
+          logIndex: String(l.logIndex ?? ''),
+        })),
+      };
+      return res.json(out);
+    } catch (e) {
+      console.error('[advice/tx] error:', e);
       return res.status(500).json({ error: String(e.message || e) });
     }
   });
@@ -359,5 +521,4 @@ main().catch((err) => {
   console.error('[auth-api] Fatal error:', err);
   process.exit(1);
 });
-
 

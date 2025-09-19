@@ -8,22 +8,58 @@ import NotificationToast from '../components/ui/NotificationToast';
 
 const HomePage: React.FC = () => {
   const [toast, setToast] = React.useState<{ title: string; lines: string[]; timeoutMs?: number } | null>(null);
+  const [cid, setCid] = React.useState<number>(() => Number(localStorage.getItem('customerId') || '0'));
 
+  // Track customerId changes (cross-tab and same-tab focus)
   React.useEffect(() => {
-    const cid = Number(localStorage.getItem('customerId') || '0');
+    const syncCid = () => setCid(Number(localStorage.getItem('customerId') || '0'));
+    window.addEventListener('storage', (e) => { if (e.key === 'customerId') syncCid(); });
+    window.addEventListener('focus', syncCid);
+    // Same-tab changes don't fire 'storage' → poll as a fallback (lightweight)
+    const iv = window.setInterval(() => {
+      const v = Number(localStorage.getItem('customerId') || '0');
+      setCid(prev => (prev !== v ? v : prev));
+    }, 800);
+    return () => {
+      window.removeEventListener('focus', syncCid);
+      window.clearInterval(iv);
+    };
+  }, []);
+
+  // Fetch and show toast per customer
+  React.useEffect(() => {
     if (!cid) return;
-    const key = `promoShown:2025-08:${cid}`;
+    // bump storage version to avoid old flags blocking
+    const key = `promoShown:v2:2025-08:${cid}`;
     const force = localStorage.getItem('forcePromo') === '1';
     if (localStorage.getItem(key) && !force) return;
 
-    fetchOffer(cid, 0.6).then(res => {
-      if (res.shouldNotify && res.message) {
-        setToast({ title: res.message.title, lines: res.message.lines, timeoutMs: res.message.timeoutMs });
+    // Use threshold=0 to always surface DB content if present
+    fetchOffer(cid, 0.0).then(res => {
+      if (!res) return;
+      if (res.shouldNotify || !!res.facts || !!res.decision) {
+        // Prefer dynamic content from DB decision/facts
+        const parseFacts = (facts?: string | null): string[] => {
+          if (!facts) return [];
+          const raw = facts
+            .split(/\n|\r|;|•|\u2022|\u2023|-|–|—/)
+            .map(s => s.trim())
+            .filter(Boolean);
+          return raw.slice(0, 3);
+        };
+        const d = (res.decision || '').toLowerCase();
+        const dynamicTitle = d === 'hot' ? '🔥 Ưu đãi phù hợp cho bạn'
+          : d === 'warm' ? '✨ Gợi ý nên xem'
+          : '🔎 Gợi ý tham khảo';
+        const factLines = parseFacts(res.facts);
+        const title = res.message?.title || dynamicTitle;
+        const lines = factLines.length > 0 ? factLines : (res.message?.lines || []);
+        setToast({ title, lines, timeoutMs: res.message?.timeoutMs || 10000 });
         localStorage.setItem(key, '1');
         localStorage.removeItem('forcePromo');
       }
     }).catch(() => {});
-  }, []);
+  }, [cid]);
 
   return (
     <div className="home-page">
@@ -197,7 +233,16 @@ const HomePage: React.FC = () => {
 
       {/* Notification Toast */}
       {toast && (
-        <NotificationToast title={toast.title} lines={toast.lines} timeoutMs={toast.timeoutMs} position="topRight" offsetTop={96} onClose={() => setToast(null)} />
+        <NotificationToast
+          key={`toast-${cid}`}
+          id={cid}
+          title={toast.title}
+          lines={toast.lines}
+          timeoutMs={toast.timeoutMs}
+          position="bottomLeft"
+          offsetTop={96}
+          onClose={() => setToast(null)}
+        />
       )}
     </div>
   );
