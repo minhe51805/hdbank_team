@@ -1,0 +1,1489 @@
+{
+  "name": "HDBANK",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aa7949e4-b0a4-44a2-8b10-dce3d7c51373",
+              "name": "payload.changed.spend_health",
+              "value": "={{ $json.payload.changed.spend_health }}",
+              "type": "object"
+            },
+            {
+              "id": "3e6903a2-9f31-45e2-bbb2-80a4e69c437b",
+              "name": "payload.changed.spend_shopping",
+              "value": "={{ $json.payload.changed.spend_shopping }}",
+              "type": "object"
+            },
+            {
+              "id": "c5121555-1ce0-4eca-a22c-21c0847798f4",
+              "name": "payload.changed.spend_education",
+              "value": "={{ $json.payload.changed.spend_education }}",
+              "type": "object"
+            },
+            {
+              "id": "d6580a6a-cbbc-483d-a76c-e21d6b785ae6",
+              "name": "payload.changed.spend_utilities",
+              "value": "={{ $json.payload.changed.spend_utilities }}",
+              "type": "object"
+            },
+            {
+              "id": "0301d5cf-520b-44be-ac60-28e935d87f19",
+              "name": "payload.changed.spend_food_grocery",
+              "value": "={{ $json.payload.changed.spend_food_grocery }}",
+              "type": "object"
+            },
+            {
+              "id": "a8f7cb15-6b1e-4129-a7dd-8fe67cd062e2",
+              "name": "payload.changed.spend_entertainment",
+              "value": "={{ $json.payload.changed.spend_entertainment }}",
+              "type": "object"
+            },
+            {
+              "id": "130f1fb7-1b76-4423-b0a2-d364b9be9568",
+              "name": "payload.changed.spend_travel",
+              "value": "={{ $json.payload.changed.spend_travel }}",
+              "type": "object"
+            },
+            {
+              "id": "9d3b385f-91d2-454b-8ee0-279096ae53f8",
+              "name": "payload.chat_id",
+              "value": "={{ $json.payload.chat_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1180,
+        -500
+      ],
+      "id": "c3dc3712-96a3-487b-8a3f-0877cc753760",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -680
+      ],
+      "id": "88b4d71a-f9ff-4326-b8e9-e1cff0d0fb8d",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.payload.chat_id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        -680
+      ],
+      "id": "5921f312-2a25-4bf3-93b8-2b3e647e45de",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## WorkFlow trigger chat spending\n",
+        "height": 772,
+        "width": 1872,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1420,
+        -920
+      ],
+      "typeVersion": 1,
+      "id": "a3b9b279-d929-4e65-9663-8aba4085877f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items[0].json.payload.changed\nconst changed = items[0].json.payload.changed;\n\n// Hàm format tiền Việt\nfunction formatVND(amount) {\n  return new Intl.NumberFormat('vi-VN').format(amount) + ' ₫';\n}\n\nlet message = \"\";\n\nfor (const [key, value] of Object.entries(changed)) {\n  if (value !== null) {\n    const oldVal = Number(value.old);\n    const newVal = Number(value.new);\n    const diff = newVal - oldVal;\n\n    message += `${key}: ${formatVND(diff)}\\n`;\n  }\n}\n\nreturn [{\n  json: {\n    changed_string: message.trim(),\n    chat_id: $input.first().json.payload.chat_id\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -980,
+        -660
+      ],
+      "id": "5cc06b4b-b514-4551-ab4b-09c06aa350f4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Init",
+        "height": 364,
+        "width": 944,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1380,
+        -2620
+      ],
+      "typeVersion": 1,
+      "id": "96d26616-5de6-4e86-a558-6f4461b0733e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        -2220
+      ],
+      "id": "68942ff3-c4d7-4e54-aa1f-53de7698f034",
+      "name": "sendMessage"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendChatAction",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.body.message.chat.id }}"
+            },
+            {
+              "name": "action",
+              "value": "typing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1100,
+        -1600
+      ],
+      "id": "5f9832b9-1b9f-4a08-91ad-f740dd4fe8ea",
+      "name": "sendChatAction"
+    },
+    {
+      "parameters": {
+        "content": "## WorkFlow chat zalo",
+        "height": 1112,
+        "width": 1192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1420,
+        -2180
+      ],
+      "typeVersion": 1,
+      "id": "782748d8-09d9-4cd8-af81-7a4cff19ec4d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "ALTER TABLE public.features_monthly\nADD COLUMN chat_id varchar;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -760,
+        -2580
+      ],
+      "id": "c218de71-b461-48bf-9908-bd96f72572b4",
+      "name": "Add Col chat_id",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendChatAction",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chat_id }}"
+            },
+            {
+              "name": "action",
+              "value": "typing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -740,
+        -660
+      ],
+      "id": "95a3fe5f-18ae-4e95-9b05-864993de19a9",
+      "name": "sendChatAction1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Code').item.json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        -880
+      ],
+      "id": "c8ea8977-8a13-41bb-8fe9-6caef7582d0c",
+      "name": "sendMessage1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatzalo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        -1720
+      ],
+      "id": "4b0b7e19-2884-4912-821a-e4578dfa7d50",
+      "name": "Webhook",
+      "webhookId": "df13b108-82a1-43bf-83c9-f701d474e24a"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -140,
+        -2060
+      ],
+      "id": "abb3b9ed-6e65-40dd-af39-723f51e47dd4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.message.chat.id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -20,
+        -2060
+      ],
+      "id": "7969dda7-1cf8-42d4-bfd2-aba6c2714614",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -1460
+      ],
+      "id": "d68d5084-6858-4f9b-9600-065bdd421493",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.message.text }}",
+        "options": {
+          "systemMessage": "=Bạn là CashyBear – chatbot ngân hàng vui tính, cà khịa nhẹ nhưng lịch sự.\nNgữ cảnh:\nTin nhắn khách: \"{{ $('Webhook').item.json.body.message.text }}\"\nChat_id: \"{{ $('Webhook').item.json.body.message.chat.id }}\"\nBạn cần nhớ lịch sử hội thoại theo chat_id để giữ ngữ cảnh (có memory).\nNhiệm vụ:\n1) Trả lời bằng tiếng Việt, ngắn gọn 1–3 câu. Phong cách thân thiện, vui tính, cà khịa nhẹ; có thể mở đầu bằng emoji (💸, 🤭, 😏, 😂).\n2) Nếu khách hỏi về số dư/chi tiêu/thu nhập… Hãy gọi tool Postgres SelectBalance (theo chat_id) để lấy balance_avg từ bảng features_monthly, rồi trả lời dựa trên kết quả. Không bịa số.\n3) Nếu khách nói ngoài lề (chào hỏi, đùa…), đáp lại duyên dáng giữ phong cách “ngân hàng cà khịa”.\n4) Không giảng giải dài dòng, không dạy đời.\nQuy tắc:\nChỉ gửi câu trả lời cuối cùng cho khách (ngắn gọn, vui tính).\nTool call SelectBalance phải được gọi riêng (không hiển thị trong câu trả lời).\nKhông lộ dữ liệu nội bộ/SQL; không nhắc đến việc gọi tool."
+        }
+      },
+      "id": "65a56230-007d-4724-b55b-892c7fcb188d",
+      "name": "AI Agent (Chat Normal)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -100,
+        -2240
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "content": "## Chat Normal & balance\n",
+        "height": 400,
+        "width": 800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -180,
+        -2320
+      ],
+      "typeVersion": 1,
+      "id": "607d716d-01b3-4eb9-a068-10c7db9a5303",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -1580
+      ],
+      "id": "50cbe820-f56c-46aa-96a1-ade2383c1a0b",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.message.chat.id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        20,
+        -1560
+      ],
+      "id": "0be53aa7-99fc-48d8-a344-843ccefddd0c",
+      "name": "Postgres Chat Memory2",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.message.text }}",
+        "options": {
+          "systemMessage": "=Bạn là chatbot ngân hàng phân tích chi tiêu từ một tin nhắn.\nNgữ cảnh:\nTin nhắn: \"{{ $('Webhook').item.json.body.message.text }}\"\nYêu cầu:\n1) Trích xuất tất cả khoản chi tiêu trong tin nhắn.\n2) Với mỗi khoản, xác định:\namount: số tiền (VND, số nguyên). Quy tắc parse: hỗ trợ “k/ nghìn/ ngàn”, “triệu/ tr/ m”, dấu chấm phẩy ngăn cách (ví dụ 120k → 120000; 1.2tr → 1200000).\ncolumn: ánh xạ 1 trong các cột:\nspend_food_grocery; spend_utilities; spend_shopping; spend_entertainment; spend_travel; spend_education; spend_health.\nOutput:\nChỉ trả về một mảng JSON phẳng, mỗi object gồm \"column\" và \"amount\".\nNếu không tìm thấy khoản chi tiêu, trả về [].\nKhông thêm text, không gọi tool, không kèm chat_id.\nVí dụ 1:\n[\n{ \"column\": \"spend_food_grocery\", \"amount\": 30000 }\n]\nVí dụ 2:\n[\n{ \"column\": \"spend_travel\", \"amount\": 200000 },\n{ \"column\": \"spend_food_grocery\", \"amount\": 100000 }\n]"
+        }
+      },
+      "id": "8cb720d4-ded4-4316-9dde-dbd5ec9c2081",
+      "name": "AI Agent (Spending)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -120,
+        -1800
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.query }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        -1700
+      ],
+      "id": "bb3fac28-9950-41f3-a1c0-9f5034e2db53",
+      "name": "UpdateSpendPostgres",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json[\"output\"];\n\n// Xóa code block nếu có\nraw = raw.replace(/```json|```/g, \"\").trim();\n\n// Parse thành mảng các khoản chi tiêu\nconst parsed = JSON.parse(raw);\n\n// Build phần SET động\nlet setClauses = parsed.map(p => {\n  return `\"${p.column}\" = COALESCE(\"${p.column}\",0) + ${p.amount}`;\n}).join(\", \");\n\n// Chat ID\nlet chatId = $(\"Webhook\").item.json.body.message.chat.id;\n\n// Tạo query\nlet query = `\nUPDATE public.features_monthly\nSET ${setClauses}\nWHERE chat_id = '${chatId}'\nRETURNING *;\n`;\n\nreturn [{ query }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        -1700
+      ],
+      "id": "f86f97be-7418-4a3b-8897-61a5ec81ee7d",
+      "name": "Process Output"
+    },
+    {
+      "parameters": {
+        "content": "## Spending\n",
+        "height": 460,
+        "width": 800,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -180,
+        -1900
+      ],
+      "typeVersion": 1,
+      "id": "e50556d7-ca0a-42d3-99f3-264be484e1a9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Saving\n",
+        "height": 460,
+        "width": 800,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -180,
+        -1400
+      ],
+      "typeVersion": 1,
+      "id": "010c9878-6aee-460e-9e1a-7dd85ce007d6",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Code').item.json.changed_string }}",
+        "options": {
+          "systemMessage": "=AI Agent (Notification)\nBạn là chatbot ngân hàng vui tính, chuyên thông báo giao dịch/thay đổi tài chính.\nDữ liệu thay đổi:\n{{ $('Code').item.json.changed_string }}\nYêu cầu:\nViết một đoạn thông báo ngắn (2–3 câu), tiếng Việt, dễ hiểu.\nDiễn giải số tiền theo VND với dấu phẩy ngăn cách nghìn.\nNhắc lại số tiền đã tiêu hoặc biến động.\nNếu là chi tiêu (spend_): chêm cà khịa nhẹ (“Chi ăn uống hơi mạnh tay nha 😏”, “Shopping hơi quá tay rồi đó 🤭”…).\nNếu thu nhập tăng: khen vui vẻ (“Có tiền vô rồi, nhớ bao tôi ly trà sữa nha 🍹”).\nNếu số tiền giảm: chọc nhẹ (“Ví mỏng hơn rồi kìa 😂”, “Tiền bay nhanh hơn gió luôn 🤯”).\nVăn phong thân thiện, không thô tục.\nOutput: chỉ một đoạn tin nhắn duy nhất gửi khách."
+        }
+      },
+      "id": "dc296e56-a832-4d67-9c2a-029acbf9b169",
+      "name": "AI Agent (Notification)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -440,
+        -900
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -300
+      ],
+      "id": "f152f55d-9129-4e60-aa22-b1be641beff9",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.payload.chat_id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -340,
+        -280
+      ],
+      "id": "a30feebf-246a-4a11-a486-51d08a7cf03b",
+      "name": "Postgres Chat Memory4",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Lấy dữ liệu kế hoạch tiết kiệm (persona_plans) và các nhiệm vụ (persona_plan_day_tasks) \ncủa khách hàng dựa trên chat_id trong bảng features_monthly.\n\nBảng liên quan:\n- features_monthly: chứa chat_id và customer_id\n- persona_plans: chứa thông tin kế hoạch tiết kiệm theo từng tháng (plan_id, persona, goal, feasibility, weekly_cap_save, recommended_weekly_save, meta…)\n- persona_plan_day_tasks: chứa danh sách nhiệm vụ hàng ngày trong kế hoạch (task_text, date, progress, status, notes, completed_at…)\n\nCách truy vấn:\n1. Join features_monthly với persona_plans qua customer_id.\n2. Join tiếp persona_plans với persona_plan_day_tasks qua plan_id.\n3. Lọc theo chat_id = \"{{ $json['chat_id'] }}\".\n4. Lọc theo year_month = tháng hiện tại (to_char(CURRENT_DATE, 'YYYY-MM')).\n5. Điều kiện thời gian (hôm nay, ngày mai, tuần này, cả tháng) sẽ được AI Agent quyết định khi gọi tool.\n\nKết quả:\n- Thông tin kế hoạch: chat_id, plan_id, customer_id, persona, goal, weekly_cap_save, recommended_weekly_save, meta…\n- Thông tin nhiệm vụ: day_index, task_index, date, task_text, progress, status, notes, completed_at.\n\nMục đích:\n- Cho phép AI Agent tạo câu trả lời nhắc nhở khách hàng về kế hoạch tiết kiệm hiện tại:\n  • Tóm tắt kế hoạch tổng quan (goal, weekly_cap_save…).  \n  • Nhắc nhở task trong ngày, ngày mai, trong tuần, hoặc toàn bộ tháng.  \n",
+        "operation": "executeQuery",
+        "query": "SELECT \n    fm.chat_id,\n    pp.plan_id,\n    pp.customer_id,\n    pp.year_month,\n    pp.persona,\n    pp.goal,\n    pp.feasibility,\n    pp.weekly_cap_save,\n    pp.recommended_weekly_save,\n    pp.created_at AS plan_created_at,\n    pp.meta,\n    ppt.day_index,\n    ppt.task_index,\n    ppt.date,\n    ppt.task_text,\n    ppt.progress,\n    ppt.status,\n    ppt.notes,\n    ppt.completed_at,\n    ppt.created_at AS task_created_at,\n    ppt.updated_at AS task_updated_at\nFROM features_monthly fm\nJOIN persona_plans pp \n    ON CAST(fm.customer_id AS TEXT) = CAST(pp.customer_id AS TEXT)\nJOIN persona_plan_day_tasks ppt \n    ON pp.plan_id = ppt.plan_id\nWHERE fm.chat_id = '{{ $(\"Edit Fields\").item.json.payload.chat_id }}'\n  AND pp.year_month = (\n    SELECT MAX(year_month) \n    FROM persona_plans \n    WHERE customer_id = pp.customer_id\n  )\n  AND ppt.status = 'todo'\nORDER BY ppt.day_index, ppt.task_index;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -200,
+        -280
+      ],
+      "id": "94ed9ce3-4d05-46cb-b76e-44aac8479816",
+      "name": "SelectPlan",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Code').item.json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        -520
+      ],
+      "id": "6c13f441-f65f-4036-91ed-a1c60052618c",
+      "name": "sendMessage2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.payload.chat_id }}",
+        "options": {
+          "systemMessage": "=Bạn là CashyBear – chatbot ngân hàng vui tính, chuyên về nhắc nhở kế hoạch tiết kiệm. Chỉ trả lời dựa trên dữ liệu tool.\nNhiệm vụ: nhắc nhở khách hàng về kế hoạch tiết kiệm (persona_plans + persona_plan_day_tasks).  \n\nNgữ cảnh:  \n- Khách hàng: \"{{ $('Edit Fields').item.json.payload.chat_id }}\"\n\nNguyên tắc bắt buộc:  \n- KHÔNG bao giờ dùng dữ liệu trong chat memory để suy đoán hay trả lời về kế hoạch.  \n- LUÔN LUÔN gọi tool `SelectPlan` với chat_id = \"{{ $('Edit Fields').item.json.payload.chat_id }}\" trước khi đưa ra câu trả lời.  \n- Chỉ trả lời sau khi có kết quả từ tool.  \n\nQuy tắc xử lý:  \n1. Nếu `SelectPlan` trả về kết quả có plan_id (khách hàng có kế hoạch):  \n   - Nếu hôm nay có task chưa hoàn thành → nhắc nhở hoàn thành.  \n     - Nếu có nhiều task → liệt kê xuống dòng, mỗi task 1 bullet (• hoặc emoji ✅/⚡️).  \n   - Nếu tất cả task hôm nay đã xong → khen ngợi ngắn gọn, cà khịa nhẹ.  \n   - Nếu goal tháng hoặc weekly_cap_save chưa đạt → thêm nhắc về tiết kiệm.  \n\n2. Nếu `SelectPlan` trả về rỗng (không có plan_id):  \n   - Không tạo nhắc nhở.  \n   - Thay vào đó, hỏi khách hàng có muốn lên kế hoạch tiết kiệm mới không.  \n\nQuy tắc trả lời:  \n- Luôn ngắn gọn (1–3 câu).  \n- Vui tính, cà khịa nhẹ, thêm emoji đầu câu (💸, 🤭, 😏, 😂, 🏦).  \n- Không gộp tất cả task thành một đoạn dài → phải xuống dòng rõ ràng.  \n- Không giảng giải dài dòng, không show dữ liệu thô hoặc SQL.  \n\nOutput cuối cùng gửi cho khách:  \n- Chỉ gồm câu trả lời nhắc nhở hoặc lời rủ tạo plan mới, format gọn gàng, dễ nhìn.  \n- Tool call (`SelectPlan`) phải được gọi riêng, không hiển thị trong câu trả lời.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        -500
+      ],
+      "id": "7c043af9-e5e2-477e-8ff1-c3aa8b14139a",
+      "name": "AI Agent (Saving Reminder)"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "features_monthly",
+          "mode": "list",
+          "cachedResultName": "features_monthly"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "chat_id",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        120,
+        -2060
+      ],
+      "id": "12bb4073-24d1-417b-8c68-72c65948dc9b",
+      "name": "SelectBalance",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Workflow trigger auto send offers",
+        "height": 680,
+        "width": 1880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1420,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "f1ee1ecb-b718-4cf9-af38-9aa3bd84dc13",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "triggerMode": "listenTrigger",
+        "channelName": "n8n_channel_diff_full_custom",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1380,
+        -680
+      ],
+      "id": "79cdd79d-a534-4f1a-8fde-3115870f0ddf",
+      "name": "Postgres Trigger",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "triggerMode": "listenTrigger",
+        "channelName": "n8n_channel_offers",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        180
+      ],
+      "id": "8df68c2f-308a-4bdb-9a3b-57425526795f",
+      "name": "Postgres Trigger1",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TRIGGER IF EXISTS trg_features_monthly_diff ON public.features_monthly;\nDROP FUNCTION IF EXISTS notify_features_monthly_diff;\n\nCREATE OR REPLACE FUNCTION notify_features_monthly_diff()\nRETURNS trigger AS $$\nDECLARE\n    diff jsonb := '{}'::jsonb;\n    col text;\nBEGIN\n    IF TG_OP = 'UPDATE' THEN\n        -- Lặp qua tất cả key trong NEW record\n        FOR col IN\n            SELECT j.key\n            FROM jsonb_each(to_jsonb(NEW)) AS j\n        LOOP\n            IF (to_jsonb(NEW)->col) IS DISTINCT FROM (to_jsonb(OLD)->col) THEN\n                diff := diff || jsonb_build_object(\n                    col, jsonb_build_object(\n                        'old', to_jsonb(OLD)->col,\n                        'new', to_jsonb(NEW)->col\n                    )\n                );\n            END IF;\n        END LOOP;\n\n        -- Notify với custom id (customer_id)\n        PERFORM pg_notify(\n            'n8n_channel_diff_full_custom',\n            json_build_object(\n                'table', TG_TABLE_NAME,\n                'op', TG_OP,\n                'customer_id', NEW.customer_id,   -- custom id\n                'chat_id', NEW.chat_id,\n                'changed', diff\n            )::text\n        );\n    END IF;\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER trg_features_monthly_diff\nAFTER UPDATE ON public.features_monthly\nFOR EACH ROW\nEXECUTE FUNCTION notify_features_monthly_diff();\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1280,
+        -2400
+      ],
+      "id": "c71ea3f1-a404-4115-9fa5-fac62c35a194",
+      "name": "create trigger (spending)",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- XÓA TRIGGER & FUNCTION CŨ\nDROP TRIGGER IF EXISTS trg_predictions_llm_with_facts_offer ON public.predictions_llm_with_facts;\nDROP FUNCTION IF EXISTS notify_predictions_llm_with_facts_offer;\n\n-- FUNCTION MỚI: notify luôn, nếu không có chat_id thì trả về \"unknown\"\nCREATE OR REPLACE FUNCTION notify_predictions_llm_with_facts_offer()\nRETURNS trigger AS $$\nDECLARE\n    v_chat_id varchar;\nBEGIN\n    -- Lấy chat_id từ bảng features_monthly dựa trên customer_id\n    SELECT fm.chat_id\n    INTO v_chat_id\n    FROM features_monthly fm\n    WHERE fm.customer_id = NEW.customer_id\n    LIMIT 1;\n\n    -- Notify khi probability > 0.6\n    IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') \n       AND NEW.probability > 0.6 THEN\n\n        PERFORM pg_notify(\n            'n8n_channel_offers',\n            json_build_object(\n                'chat_id', COALESCE(v_chat_id, 'unknown')\n            )::text\n        );\n    END IF;\n\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- TRIGGER\nCREATE TRIGGER trg_predictions_llm_with_facts_offer\nAFTER INSERT OR UPDATE ON public.predictions_llm_with_facts\nFOR EACH ROW\nEXECUTE FUNCTION notify_predictions_llm_with_facts_offer();\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1040,
+        -2400
+      ],
+      "id": "bce837fc-16c3-46ad-b3ec-873fe65ef639",
+      "name": "create trigger (offers)",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE public.features_monthly \nSET chat_id = '4aef3344970e7e50271f' \nWHERE customer_id = 1;\n\nUPDATE public.features_monthly \nSET chat_id = '1c4360ed32badbe482ab' \nWHERE customer_id = 2;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -580,
+        -2420
+      ],
+      "id": "0538dfde-b096-4dae-8f8d-6564c6332410",
+      "name": "Update chat_id",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendChatAction",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chat_id }}"
+            },
+            {
+              "name": "action",
+              "value": "typing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1000,
+        200
+      ],
+      "id": "aff5fa6f-bd44-46cf-90a7-e00be48bc45e",
+      "name": "sendChatAction2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3bc91887-3492-4123-a7e3-f3963b7943bf",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -780,
+        200
+      ],
+      "id": "1c72e682-36e7-4e18-b258-5390053970cf",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendPhoto",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Postgres Trigger1').item.json.payload.chat_id }}"
+            },
+            {
+              "name": "caption",
+              "value": "💸 Xin chúc mừng! Bạn nằm trong danh sách ưu đãi VIP tháng này. Ngân hàng hơi “rộng rãi” nên tặng riêng bạn gói lãi suất xịn, đừng bỏ lỡ nha 😏"
+            },
+            {
+              "name": "photo",
+              "value": "https://media-public.canva.com/5sbVk/MAFyij5sbVk/1/tl.png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -320,
+        20
+      ],
+      "id": "0ec96259-21af-4783-954f-98bc2ea0a1b0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://bot-api.zapps.me/bot276439854680594648:vVYYkHdlKJorzkDodjoQKnGEQrcGDWKzfUwxvpIuDecVQKSwUTmqqGHaxivJNkrW/setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://tuananhit.tailbf3e12.ts.net/webhook-test/chatzalo"
+            },
+            {
+              "name": "secret_token",
+              "value": "tuananhahihi"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        -2580
+      ],
+      "id": "54bc652e-fbd7-4533-ab7b-56de02f9d3cc",
+      "name": "setWebhook"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -1080
+      ],
+      "id": "f39d8801-73b5-4266-83a9-767f09e051c4",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "caSyfkV6BdDRfxgY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.message.text }}",
+        "options": {
+          "systemMessage": "=Bạn là chatbot ngân hàng vui tính và cà khịa nhẹ.  \nNhiệm vụ: khi khách hàng hỏi về tiết kiệm, kế hoạch tiết kiệm, quản lý tài chính… bạn chỉ được phép trả lời dựa trên dữ liệu từ tool `SelectPlan`.  \n\nNgữ cảnh:  \n- Tin nhắn khách: \"{{ $('Webhook').item.json.body.message.text }}\"\n- Chat_id: \"{{ $('Webhook').item.json.body.message.chat.id }}\"\n\nQuy tắc xử lý:  \n1. LUÔN gọi tool `SelectPlan` để lấy dữ liệu kế hoạch tiết kiệm của khách hàng.  \n   - Input: chat_id = \"{{ $('Webhook').item.json.body.message.chat.id }}\"  \n   - Tuyệt đối không dùng dữ liệu từ chat memory để trả lời.  \n\n2. Nếu có kế hoạch (có plan_id):  \n   - Nếu khách hỏi **chung chung** → tóm tắt persona, goal, weekly_cap_save hoặc recommended_weekly_save.  \n   - Nếu khách hỏi **hôm nay** → liệt kê task có `date = CURRENT_DATE`.  \n   - Nếu khách hỏi **ngày mai** → liệt kê task có `date = CURRENT_DATE + 1`.  \n   - Nếu khách hỏi **tuần này** → liệt kê task trong khoảng `CURRENT_DATE → CURRENT_DATE + 6`.  \n   - Nếu khách hỏi **toàn bộ tháng** → liệt kê tất cả task trong plan.  \n   - Nếu nhiều task → format xuống dòng với bullet (• hoặc emoji ✅/⚡️).  \n\n3. Nếu không có kế hoạch (query rỗng):  \n   - Trả lời ngắn gọn rằng chưa có kế hoạch.  \n   - Rủ khách có muốn tạo kế hoạch tiết kiệm mới không.  \n\nQuy tắc trả lời:  \n- Luôn ngắn gọn (1–3 câu).  \n- Phong cách: vui tính, cà khịa nhẹ, thêm emoji (💸, 🤭, 😏, 🏦).  \n- Khi liệt kê task: xuống dòng rõ ràng, mỗi task 1 dòng.  \n- Không giảng giải dài dòng, không show dữ liệu thô hoặc SQL.  \n\nOutput cuối cùng gửi cho khách:  \n- Chỉ gồm câu trả lời (thông tin plan hoặc tasks).  \n- Tool call (`SelectPlan`) phải được gọi riêng, không hiển thị trong câu trả lời.\n"
+        }
+      },
+      "id": "4b3a05d5-4de1-4470-92ca-bab7c6565dd0",
+      "name": "AI Agent (Saving)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -80,
+        -1280
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Lấy dữ liệu kế hoạch tiết kiệm (persona_plans) và các nhiệm vụ (persona_plan_day_tasks) \ncủa khách hàng dựa trên chat_id trong bảng features_monthly.\n\nBảng liên quan:\n- features_monthly: chứa chat_id và customer_id\n- persona_plans: chứa thông tin kế hoạch tiết kiệm theo từng tháng (plan_id, persona, goal, weekly_cap_save, recommended_weekly_save…)\n- persona_plan_day_tasks: chứa danh sách nhiệm vụ hàng ngày trong kế hoạch (task_text, date, status, progress…)\n\nTruy vấn:\n1. Join features_monthly với persona_plans qua customer_id.\n2. Join tiếp persona_plans với persona_plan_day_tasks qua plan_id.\n3. Lọc theo chat_id = \"{{ $json['chat_id'] }}\".\n4. Lọc theo year_month = tháng hiện tại.\n5. Các điều kiện thời gian (hôm nay, ngày mai, tuần này, cả tháng) sẽ được AI Agent quyết định khi sử dụng tool.\n\nKết quả:\n- Thông tin kế hoạch: plan_id, customer_id, persona, goal, weekly_cap_save, recommended_weekly_save, meta…\n- Thông tin task: day_index, task_index, date, task_text, progress, status, notes, completed_at.\n\nMục đích:\n- Cho phép AI Agent tạo câu trả lời về kế hoạch tiết kiệm hiện tại của khách hàng:\n  • Tóm tắt kế hoạch chung (goal, weekly_cap_save…).  \n  • Liệt kê task hôm nay, ngày mai, tuần này, hoặc toàn bộ tháng.  \n",
+        "operation": "executeQuery",
+        "query": "SELECT \n    fm.chat_id,\n    pp.plan_id,\n    pp.customer_id,\n    pp.year_month,\n    pp.persona,\n    pp.goal,\n    pp.feasibility,\n    pp.weekly_cap_save,\n    pp.recommended_weekly_save,\n    pp.created_at AS plan_created_at,\n    pp.meta,\n    ppt.day_index,\n    ppt.task_index,\n    ppt.date,\n    ppt.task_text,\n    ppt.progress,\n    ppt.status,\n    ppt.notes,\n    ppt.completed_at,\n    ppt.created_at AS task_created_at,\n    ppt.updated_at AS task_updated_at\nFROM features_monthly fm\nJOIN persona_plans pp \n    ON CAST(fm.customer_id AS TEXT) = CAST(pp.customer_id AS TEXT)\nJOIN persona_plan_day_tasks ppt \n    ON pp.plan_id = ppt.plan_id\nWHERE fm.chat_id = '{{ $('Webhook').item.json.body.message.chat.id }}'\n  AND pp.year_month = (\n    SELECT MAX(year_month) \n    FROM persona_plans \n    WHERE customer_id = pp.customer_id\n  )\n  AND ppt.status = 'todo'\nORDER BY ppt.day_index, ppt.task_index;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        -1080
+      ],
+      "id": "76fcea6e-a6ac-4b4c-be24-b0693223520c",
+      "name": "SelectPlan1",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.message.chat.id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        100,
+        -1080
+      ],
+      "id": "ce51420d-d2f0-4fb6-9c33-1b2414a96033",
+      "name": "Postgres Chat Memory3",
+      "credentials": {
+        "postgres": {
+          "id": "VCPkkkhzz2keTZse",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zapps.me/bot4204665481370682723:ePHjtrkyFJMozdnvxpfXQYOUpuXJnPqyYrYJzHaRdiZeZqhDOBxvzIpEZxUceTIp/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        -1280
+      ],
+      "id": "9c4c28fe-0c31-4e98-a485-be3ee334c55c",
+      "name": "sendMessage4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        360
+      ],
+      "id": "13cde80e-f5e3-4476-92b7-daecceec2e33",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "inputText": "=Bạn là hệ thống phân loại tin nhắn khách hàng.\n\nNgữ cảnh:\n- Tin nhắn: \"{{ $('Webhook').item.json.body.message.text }}\"\n",
+        "categories": {
+          "categories": [
+            {
+              "category": "chat_normal",
+              "description": "Dùng cho các trường hợp khác như chào hỏi, nói chuyện vui, đùa giỡn, hỏi số dư tài khoản, v.v."
+            },
+            {
+              "category": "spending",
+              "description": "Dùng cho tin nhắn khách hàng báo chi tiêu (ăn uống, trà sữa, hóa đơn, shopping, du lịch, giáo dục, y tế, giải trí…)."
+            },
+            {
+              "category": "saving",
+              "description": "Dùng cho tin nhắn khách hàng hỏi về tiết kiệm, lời khuyên, quản lý tài chính, hoặc kế hoạch tiết kiệm hiện tại của họ."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -740,
+        -1740
+      ],
+      "id": "63a87993-02ba-4f39-bf69-5013a1dc563c",
+      "name": "Text Classifier"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Notification)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent (Notification)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "sendChatAction1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendChatAction": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Col chat_id": {
+      "main": [
+        [
+          {
+            "node": "Update chat_id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendChatAction1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent (Notification)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent (Saving Reminder)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "sendChatAction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Chat Normal)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent (Chat Normal)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Chat Normal)": {
+      "main": [
+        [
+          {
+            "node": "sendMessage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Spending)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent (Spending)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Spending)": {
+      "main": [
+        [
+          {
+            "node": "Process Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Output": {
+      "main": [
+        [
+          {
+            "node": "UpdateSpendPostgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Notification)": {
+      "main": [
+        [
+          {
+            "node": "sendMessage1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Saving Reminder)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent (Saving Reminder)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SelectPlan": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent (Saving Reminder)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Saving Reminder)": {
+      "main": [
+        [
+          {
+            "node": "sendMessage2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SelectBalance": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent (Chat Normal)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create trigger (spending)": {
+      "main": [
+        [
+          {
+            "node": "create trigger (offers)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Trigger1": {
+      "main": [
+        [
+          {
+            "node": "sendChatAction2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendChatAction2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Saving)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Saving)": {
+      "main": [
+        [
+          {
+            "node": "sendMessage4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SelectPlan1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent (Saving)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent (Saving)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "AI Agent (Chat Normal)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent (Spending)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent (Saving)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fb268bdb-6454-448c-a796-3eb55ef83eeb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "49623fc4ba53af1ba2b87c0f78f2e8424ed42ad05a206db7c47bc4b5670fd77b"
+  },
+  "id": "lX6rhRVG8du9WHJK",
+  "tags": []
+}
