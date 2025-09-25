@@ -201,7 +201,7 @@ export default function ExplorerPage() {
             <div>Method</div>
             <div>From</div>
             <div>To</div>
-            <div>Age</div>
+            <div>Time</div>
             <div>Status</div>
             <div>Block</div>
           </div>
@@ -275,7 +275,7 @@ function VerifyPanel() {
         </select>
 
         <label>Customer ID</label>
-        <input value={customerId} onChange={(e) => setCustomerId(e.target.value)} placeholder="vd: 66" />
+        <input value={customerId} onChange={(e) => setCustomerId(e.target.value)} placeholder=" " />
 
         <label>Block date</label>
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
