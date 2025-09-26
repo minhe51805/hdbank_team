@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 interface Props {
   serverBase?: string; // e.g. http://127.0.0.1:8011
+  theme?: 'red' | 'blue';
+  placement?: 'fixed' | 'inline';
 }
 
-const ZaloQuickSpendTrigger: React.FC<Props> = ({ serverBase = 'http://127.0.0.1:8011' }) => {
+const ZaloQuickSpendTrigger: React.FC<Props> = ({ serverBase = 'http://127.0.0.1:8011', theme = 'blue', placement = 'fixed' }) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
@@ -41,10 +43,34 @@ const ZaloQuickSpendTrigger: React.FC<Props> = ({ serverBase = 'http://127.0.0.1
     }
   };
 
+  const primaryBtnStyle: React.CSSProperties = theme === 'red'
+    ? { 
+        padding: '10px 14px', borderRadius: 12, border: 0, cursor: 'pointer', color: '#fff',
+        background: 'linear-gradient(135deg, #be1128, #d4234a)', boxShadow: '0 6px 16px rgba(190,17,40,0.24)'
+      }
+    : { 
+        padding: '10px 14px', borderRadius: 12, border: 0, cursor: 'pointer', color: '#fff',
+        background: '#007bff'
+      };
+
+  const submitBtnStyle = (disabled: boolean): React.CSSProperties => theme === 'red'
+    ? {
+        padding: '8px 12px', borderRadius: 10, border: 0, cursor: disabled ? 'not-allowed' : 'pointer', color: '#fff',
+        background: disabled ? 'linear-gradient(135deg, #f2a8b4, #f3b3bf)' : 'linear-gradient(135deg, #be1128, #d4234a)'
+      }
+    : {
+        padding: '8px 12px', borderRadius: 10, border: 0, cursor: disabled ? 'not-allowed' : 'pointer', color: '#fff',
+        background: disabled ? '#8bb6ff' : '#007bff'
+      };
+
+  const containerStyle: React.CSSProperties = placement === 'fixed'
+    ? { position: 'fixed', right: 16, bottom: 24, zIndex: 9999 }
+    : { position: 'static', marginTop: 8 };
+
   return (
-    <div style={{ position: 'fixed', right: 16, bottom: 24, zIndex: 9999 }}>
+    <div style={containerStyle}>
       {!open && (
-        <button onClick={() => setOpen(true)} style={{ padding: '10px 14px', borderRadius: 8, background: '#007bff', color: '#fff', border: 0, cursor: 'pointer' }}>
+        <button onClick={() => setOpen(true)} style={primaryBtnStyle}>
           Gửi chi tiêu → Zalo
         </button>
       )}
@@ -72,7 +98,7 @@ const ZaloQuickSpendTrigger: React.FC<Props> = ({ serverBase = 'http://127.0.0.1
           {msg && <div style={{ marginTop: 10, fontSize: 12, color: '#c00' }}>{msg}</div>}
           <div style={{ marginTop: 14, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
             <button onClick={() => setOpen(false)} style={{ padding: '8px 12px', borderRadius: 8, background: '#eee', border: 0, cursor: 'pointer' }}>Đóng</button>
-            <button onClick={submit} disabled={busy || !target?.chat_id} style={{ padding: '8px 12px', borderRadius: 8, background: (busy || !target?.chat_id) ? '#8bb6ff' : '#007bff', color: '#fff', border: 0, cursor: 'pointer' }}>
+            <button onClick={submit} disabled={busy || !target?.chat_id} style={submitBtnStyle(busy || !target?.chat_id)}>
               {busy ? 'Đang gửi...' : 'Gửi'}
             </button>
           </div>
