@@ -5,6 +5,7 @@ import ProductSlider from '../components/sections/ProductSlider';
 import './HomePage.css';
 import { fetchOffer } from '../utils/promoAPI';
 import NotificationToast from '../components/ui/NotificationToast';
+import ZaloQuickSpendTrigger from '../components/ui/ZaloQuickSpendTrigger';
 
 const HomePage: React.FC = () => {
   const [toast, setToast] = React.useState<{ title: string; lines: string[]; timeoutMs?: number } | null>(null);
@@ -53,7 +54,7 @@ const HomePage: React.FC = () => {
           : '🔎 Gợi ý tham khảo';
         const factLines = parseFacts(res.facts);
         const title = res.message?.title || dynamicTitle;
-        const lines = factLines.length > 0 ? factLines : (res.message?.lines || []);
+        const lines = (res.message?.lines && res.message.lines.length > 0) ? res.message.lines : factLines;
         setToast({ title, lines, timeoutMs: res.message?.timeoutMs || 10000 });
         localStorage.setItem(key, '1');
         localStorage.removeItem('forcePromo');
@@ -244,6 +245,9 @@ const HomePage: React.FC = () => {
           onClose={() => setToast(null)}
         />
       )}
+
+      {/* Zalo Quick Spend Trigger */}
+      <ZaloQuickSpendTrigger serverBase="http://127.0.0.1:8011" />
     </div>
   );
 };

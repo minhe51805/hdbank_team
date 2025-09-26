@@ -8,6 +8,7 @@ import asyncio
 import json
 import requests
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 import uvicorn
@@ -16,12 +17,19 @@ import logging
 import time
 
 # Zalo Bot Configuration
-ZALO_BOT_TOKEN = "23552880447759231:OTVNZPZVefKdaCgBtVBDAqJzOqwLHYKSSvjgEKyqIiOccBRjogKNLFhIIUwQxcwa"
+ZALO_BOT_TOKEN = "KeyChatbot"
 ZALO_API_BASE = "https://bot-api.zapps.me/bot"
 CASHYBEAR_API_BASE = "http://127.0.0.1:8010"
 
 # FastAPI app for webhook
 app = FastAPI(title="Zalo Bot Webhook for CashyBear", version="1.0.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +41,7 @@ DEFAULT_CUSTOMER_ID = 1  # Fallback customer ID for demo
 
 # 💾 Conversation storage để debug và manual reply
 CONVERSATIONS: List[Dict[str, Any]] = []
+LAST_CHAT_TARGET: Dict[str, Any] = {"chat_id": None, "user_id": None, "user_name": None}
 
 class ZaloMessage:
     """Zalo message parser"""
@@ -75,10 +84,114 @@ def save_conversation(user_id: str, user_name: str, chat_id: str, user_message: 
     if len(CONVERSATIONS) > 100:
         CONVERSATIONS[:] = CONVERSATIONS[-100:]
     
+    # Update last target
+    try:
+        global LAST_CHAT_TARGET
+        LAST_CHAT_TARGET = {"chat_id": chat_id, "user_id": user_id, "user_name": user_name, "ts": conv["timestamp"]}
+    except Exception:
+        pass
+
     logger.info(f"💾 Saved conversation: {user_name} ({user_id}) → Customer 1")
     return conv
 
-async def call_cashybear_api(customer_id: int, message: str, session_id: str, persona: str = "Mentor") -> Dict[str, Any]:
+@app.get("/last_chat_target")
+async def last_chat_target():
+    """Return latest chat target (chat_id, user_id, user_name)."""
+    return {"ok": True, **LAST_CHAT_TARGET}
+
+@app.post("/trigger/spend")
+async def trigger_spend(payload: Dict[str, Any]):
+    """
+    Trigger: accept { amount: number|string, note?: string, persona?: string, chat_id?: string }
+    - If chat_id omitted, use most recent chat target
+    - Compose a message like: "Mình vừa chi tiêu {amount} cho {note}. Cập nhật giúp nhé."
+    - Send to CashyBear API (as chat) and forward reply to Zalo chat_id
+    """
+    try:
+        amt_raw = str(payload.get("amount", "")).strip()
+        note = str(payload.get("note", "")).strip()
+        persona = str(payload.get("persona", "Angry Mom") or "Angry Mom")
+        chat_id = payload.get("chat_id") or LAST_CHAT_TARGET.get("chat_id")
+        user_id = LAST_CHAT_TARGET.get("user_id")
+        if not chat_id or not user_id:
+            return JSONResponse({"ok": False, "error": "No recent chat target. Please send a message on Zalo first."}, status_code=400)
+
+        # Normalize amount
+        try:
+            amt = float(str(amt_raw).replace(",", "").replace(".", "").replace(" ", "")) if str(amt_raw).isdigit() else float(amt_raw)
+        except Exception:
+            # keep as raw text
+            amt = None
+
+        # Map to customer and session
+        customer_id = get_customer_id_for_user(user_id)
+        session_id = f"zalo_{user_id}"
+
+        # Compose message to CashyBear
+        if amt is not None:
+            msg = f"Mình vừa chi tiêu {amt:,.0f} VND".replace(",", ".")
+        else:
+            msg = f"Mình vừa chi tiêu {amt_raw}"
+        if note:
+            msg += f" cho {note}"
+        msg += ". Cập nhật giúp nhé."
+
+        # Fetch current plan summary to compare against target
+        plan_note = ""
+        try:
+            r = requests.get(f"{CASHYBEAR_API_BASE}/dashboard/todo", params={"customerId": customer_id}, timeout=8)
+            if r.status_code == 200:
+                dj = r.json()
+                summary = dj.get("summary", {}) if isinstance(dj, dict) else {}
+                rec_week = summary.get("recommendedWeeklySave")
+                weekly_cap = summary.get("weeklyCapSave")
+                # Approximate daily target from recommended weekly
+                if rec_week is not None:
+                    try:
+                        rec_week_f = float(rec_week)
+                        daily_target = rec_week_f / 7.0
+                        if amt is not None:
+                            over = float(amt) - daily_target
+                            if over > 0:
+                                plan_note = f"Theo kế hoạch ~{rec_week_f:,.0f} VND/tuần (~{daily_target:,.0f} VND/ngày). Hôm nay mình đang vượt khoảng {over:,.0f} VND.".replace(",", ".")
+                            else:
+                                plan_note = f"Theo kế hoạch ~{rec_week_f:,.0f} VND/tuần (~{daily_target:,.0f} VND/ngày). Hôm nay vẫn trong mức (dư {abs(over):,.0f} VND).".replace(",", ".")
+                        else:
+                            plan_note = f"Theo kế hoạch ~{rec_week_f:,.0f} VND/tuần (~{daily_target:,.0f} VND/ngày).".replace(",", ".")
+                    except Exception:
+                        pass
+                elif weekly_cap is not None:
+                    try:
+                        wc = float(weekly_cap)
+                        plan_note = f"Dư địa tuần tối đa ~{wc:,.0f} VND (~{wc/7.0:,.0f} VND/ngày).".replace(",", ".")
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
+        enriched = msg
+        if plan_note:
+            warning = ""
+            try:
+                if "vượt khoảng" in plan_note:
+                    warning = "\n\n[Chế độ Angry Mom] Này này! Chi tiêu kiểu này là đi sai plan rồi đó nha. Cắt bớt ăn uống, dừng quẹt thẻ vô tội vạ, ưu tiên tự nấu ở nhà và hoàn thành nhiệm vụ ngày hôm nay. Nghe rõ chưa?"
+            except Exception:
+                pass
+            enriched = msg + "\n" + plan_note + warning + "\nNhờ nhắc nếu mình lệch kế hoạch và gợi ý cách cân đối lại cho ngày/tuần này nhé."
+
+        logger.info(f"🧩 Trigger spend → CashyBear: {enriched}")
+        cb = await call_cashybear_api(customer_id=customer_id, message=enriched, session_id=session_id, persona=persona)
+        reply_text = cb.get("reply", "Đã ghi nhận khoản chi tiêu.")
+        if len(reply_text) > 1900:
+            reply_text = reply_text[:1900] + "... (rút gọn)"
+
+        ok = await send_zalo_message(chat_id, reply_text)
+        return JSONResponse({"ok": bool(ok), "chat_id": chat_id, "reply": reply_text})
+    except Exception as e:
+        logger.error(f"/trigger/spend error: {e}")
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
+
+async def call_cashybear_api(customer_id: int, message: str, session_id: str, persona: str = "Angry Mom") -> Dict[str, Any]:
     """Call CashyBear chat API"""
     try:
         payload = {
@@ -210,7 +323,7 @@ async def zalo_webhook_test(test_id: str, request: Request):
                         customer_id=customer_id,
                         message=user_message,
                         session_id=session_id,
-                        persona="Mentor"
+                        persona="Angry Mom"
                     )
                     
                     reply_text = cashybear_response.get("reply", "Xin lỗi, tôi không hiểu. Vui lòng thử lại.")
@@ -316,7 +429,7 @@ async def zalo_webhook(request: Request):
             customer_id=customer_id,
             message=user_message,
             session_id=session_id,
-            persona="Mentor"  # Default persona, could be configurable per user
+            persona="Angry Mom"  # Default persona for Zalo
         )
         
         logger.info(f"📨 CashyBear response: {cashybear_response.get('reply', '')[:100]}...")

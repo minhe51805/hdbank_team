@@ -4,6 +4,7 @@ import { useChat } from '../contexts/ChatContext';
 import PersonalitySelector, { BankingPersonality, bankingPersonalities } from '../components/ui/PersonalitySelector';
 import AuthAPI from '../services/authAPI';
 import './ProfilePage.css';
+import ZaloQuickSpendTrigger from '../components/ui/ZaloQuickSpendTrigger';
 
 const ProfilePage: React.FC = () => {
   const { user, updateUser } = useAuth();
@@ -160,6 +161,11 @@ const ProfilePage: React.FC = () => {
                 )}
               </p>
             )}
+
+            {/* Zalo Quick Spend Trigger - inline, themed to red */}
+            <div style={{ marginTop: 12 }}>
+              <ZaloQuickSpendTrigger serverBase="http://127.0.0.1:8011" theme="red" placement="inline" />
+            </div>
           </div>
         </div>
 

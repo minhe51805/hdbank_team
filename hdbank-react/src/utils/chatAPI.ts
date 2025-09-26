@@ -77,9 +77,8 @@ export class ChatAPI {
               detail: { planId: plan.id, customerId }
             }));
             
-            // Format và hiển thị kế hoạch chi tiết trong chat
-            const formattedPlan = ChatAPI.formatPlanDisplay(plan, reply);
-            return formattedPlan;
+            // Chỉ trả lời xác nhận ngắn gọn, không kèm kế hoạch chi tiết
+            return 'Tuyệt! Mình đã ghi nhận kế hoạch. Bạn có thể theo dõi tiến độ ở Dashboard To‑do.';
           } catch (e) {
             console.warn('Plan accept fallback failed:', e);
           }
