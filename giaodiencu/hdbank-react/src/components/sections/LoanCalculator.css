@@ -1,0 +1,427 @@
+/* Loan Calculator Styles - Match original HDBank design */
+.card-tool-box {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  margin: 30px auto 0;
+  max-width: 1000px;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+.card-switcher {
+  width: 100%;
+}
+
+/* Header Switcher */
+.header-switcher {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.header-switcher li {
+  flex: 1;
+  text-align: center;
+  padding: 25px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  color: #666;
+  transition: all 0.3s ease;
+  border-bottom: 4px solid transparent;
+  position: relative;
+}
+
+.header-switcher li:hover {
+  background: #f1f3f4;
+  color: #333;
+}
+
+.header-switcher li.active {
+  background: white;
+  color: #be1128;
+  border-bottom-color: #be1128;
+}
+
+.header-switcher li.active::before {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: white;
+}
+
+/* Panel */
+.panel {
+  display: none;
+  padding: 40px;
+}
+
+.panel.active {
+  display: block;
+}
+
+/* Loan Calculator Form */
+.from-slide-loan {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.textAmoutTool {
+  width: 200px;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.textAmoutTool:focus {
+  border-color: #be1128;
+}
+
+.color-red {
+  color: #be1128;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+/* Range Slider */
+.input-range {
+  position: relative;
+  margin: 30px 0;
+  height: 40px;
+}
+
+.input-range__label {
+  position: absolute;
+  font-size: 12px;
+  color: #666;
+}
+
+.input-range__label--min {
+  left: 0;
+  bottom: -20px;
+}
+
+.input-range__label--max {
+  right: 0;
+  bottom: -20px;
+}
+
+.input-range__label--value {
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #be1128;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.input-range__track--background {
+  position: relative;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  margin: 15px 0;
+}
+
+.input-range__track--active {
+  position: absolute;
+  height: 100%;
+  background: #be1128;
+  border-radius: 3px;
+}
+
+.input-range__slider-container {
+  position: absolute;
+  top: -8px;
+}
+
+.input-range__slider {
+  width: 20px;
+  height: 20px;
+  background: #be1128;
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input-range__slider:hover {
+  transform: scale(1.1);
+}
+
+/* Period Wrapper */
+.period-wraper {
+  margin: 25px 0;
+}
+
+.period-wraper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.period-wraper th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border: 1px solid #e9ecef;
+}
+
+.period-wraper td {
+  padding: 15px;
+  border: 1px solid #e9ecef;
+}
+
+/* Quantity Control */
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.qty-minus,
+.qty-plus {
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: #f8f9fa;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.qty-minus:hover,
+.qty-plus:hover {
+  background: #e9ecef;
+}
+
+.qty-control input {
+  width: 60px;
+  height: 35px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Calculate Button */
+.btn-calculate {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.btn-primary {
+  background: #be1128;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #a00e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(190, 17, 40, 0.3);
+}
+
+/* Calculation Results */
+.calculation-result {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item span:first-child {
+  color: #666;
+  font-size: 14px;
+}
+
+.result-item span:last-child {
+  font-weight: 600;
+  color: #333;
+}
+
+.result-item .highlight {
+  color: #be1128 !important;
+  font-size: 18px;
+}
+
+/* Exchange Rate Panel */
+.calculator {
+  width: 100%;
+}
+
+.input-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-select img {
+  width: 24px;
+  height: auto;
+  border-radius: 2px;
+}
+
+.input-select select {
+  padding: 10px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.input-select select:focus {
+  border-color: #be1128;
+}
+
+.exchange-rates {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.rate-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.rate-item:last-child {
+  border-bottom: none;
+}
+
+.rate-value {
+  font-weight: 600;
+  color: #be1128;
+  font-size: 16px;
+}
+
+.exchange-note {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.exchange-note p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-tool-box {
+    margin: -60px 20px 40px;
+  }
+
+  .panel {
+    padding: 25px;
+  }
+
+  .header-switcher li {
+    padding: 20px 15px;
+    font-size: 15px;
+  }
+
+  .textAmoutTool {
+    width: 180px;
+    font-size: 14px;
+  }
+
+  .period-wraper table {
+    font-size: 14px;
+  }
+
+  .period-wraper th,
+  .period-wraper td {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-tool-box {
+    margin: -40px 15px 30px;
+  }
+
+  .header-switcher li {
+    padding: 18px 12px;
+    font-size: 14px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .textAmoutTool {
+    width: 140px;
+    font-size: 13px;
+  }
+
+  .result-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .period-wraper th,
+  .period-wraper td {
+    padding: 8px;
+    font-size: 13px;
+  }
+}

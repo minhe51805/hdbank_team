@@ -1,0 +1,16 @@
+{
+  "name": "auth-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "ethers": "^6.15.0",
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  }
+}

@@ -1,0 +1,422 @@
+/* PersonalitySelector fullscreen modal */
+.personality-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.98) 0%, rgba(243, 244, 246, 0.95) 100%);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.personality-selector-container {
+  background: white;
+  border-radius: 24px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 480px;
+  min-height: 600px;
+  margin: 20px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.personality-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+.personality-close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #374151;
+}
+
+.personality-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.personality-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.personality-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.personality-options {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.personality-option {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.personality-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--personality-color, #e5e7eb) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.personality-option:hover {
+  border-color: var(--personality-color, #9ca3af);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.12);
+}
+
+.personality-option:hover::before {
+  opacity: 0.04;
+}
+
+.personality-option.selected {
+  border-color: var(--personality-color, #2563eb);
+  background: var(--personality-color, #2563eb);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 0.95) 40%,
+    var(--personality-color) 100%);
+  box-shadow: 0 8px 25px -8px var(--personality-color, rgba(37, 99, 235, 0.3));
+  transform: translateY(-1px);
+}
+
+.personality-option.selected::before {
+  opacity: 0.08;
+}
+
+.personality-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--personality-color, #e5e7eb) 0%, rgba(255, 255, 255, 0.8) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.personality-option.selected .personality-icon {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.personality-icon-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.personality-emoji {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.personality-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.personality-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 6px 0;
+  line-height: 1.2;
+}
+
+.personality-option.selected .personality-name {
+  color: #1f2937;
+}
+
+.personality-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.personality-option.selected .personality-description {
+  color: #4b5563;
+}
+
+.personality-radio {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.personality-option:hover .personality-radio {
+  border-color: var(--personality-color, #9ca3af);
+}
+
+.personality-radio.checked {
+  border-color: var(--personality-color, #2563eb);
+  background: var(--personality-color, #2563eb);
+}
+
+.radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.personality-radio.checked .radio-dot {
+  opacity: 1;
+}
+
+.personality-agreement {
+  margin-bottom: 32px;
+}
+
+.agreement-checkbox {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.agreement-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s ease;
+  margin-top: 2px;
+}
+
+.agreement-checkbox:hover .checkmark {
+  border-color: #9ca3af;
+}
+
+.agreement-checkbox input:checked ~ .checkmark {
+  background: #10b981;
+  border-color: #10b981;
+}
+
+.agreement-checkbox input:checked ~ .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.agreement-text {
+  line-height: 1.5;
+}
+
+.personality-continue-btn {
+  width: 100%;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.personality-continue-btn.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 8px 25px -8px rgba(16, 185, 129, 0.4);
+}
+
+.personality-continue-btn.active:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px -8px rgba(16, 185, 129, 0.5);
+}
+
+.personality-continue-btn.active:active {
+  transform: translateY(0);
+}
+
+.personality-continue-btn.disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .personality-selector-container {
+    margin: 10px;
+    padding: 32px 24px;
+    border-radius: 20px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+  }
+
+  .personality-title {
+    font-size: 20px;
+  }
+
+  .personality-subtitle {
+    font-size: 15px;
+  }
+
+  .personality-option {
+    padding: 16px;
+  }
+
+  .personality-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+  }
+
+  .personality-emoji {
+    font-size: 20px;
+  }
+
+  .personality-name {
+    font-size: 16px;
+  }
+
+  .personality-description {
+    font-size: 13px;
+  }
+
+  .agreement-text {
+    font-size: 12px;
+  }
+
+  .personality-continue-btn {
+    padding: 14px 24px;
+    font-size: 15px;
+  }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .personality-selector-overlay {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.95) 100%);
+  }
+
+  .personality-selector-container {
+    background: #1f2937;
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .personality-title {
+    color: #f9fafb;
+  }
+
+  .personality-subtitle {
+    color: #9ca3af;
+  }
+
+  .personality-option {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .personality-name {
+    color: #f9fafb;
+  }
+
+  .personality-description {
+    color: #d1d5db;
+  }
+
+  .agreement-text {
+    color: #d1d5db;
+  }
+}

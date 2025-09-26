@@ -1,0 +1,424 @@
+/* Header Styles - Exact match with original HDBank design */
+.nav-top {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-top nav {
+  padding: 0;
+}
+
+.nav-full {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  position: relative;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Mobile Toggle Button */
+.btn-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin-right: 20px;
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-toggle:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-burger-icon {
+  width: 22px;
+  height: 2px;
+  background-color: #333;
+  margin: 2px 0;
+  transition: 0.3s;
+  border-radius: 1px;
+}
+
+/* Logo */
+.logo {
+  margin-right: 30px;
+}
+
+.logo img {
+  height: 45px;
+  width: auto;
+}
+
+/* Desktop Navigation */
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 40px;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: #be1128;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  z-index: 1001;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.dropdown-menu li {
+  padding: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5;
+  color: #be1128;
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  margin: 0 20px;
+}
+
+.searchform {
+  position: relative;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchinput {
+  width: 250px;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.searchinput:focus {
+  border-color: #be1128;
+}
+
+.searchinput::placeholder {
+  color: #999;
+}
+
+.searchform button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.searchform button img {
+  width: 16px;
+  height: 16px;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  padding: 5px;
+}
+
+.searchIcon img {
+  width: 16px;
+  height: 16px;
+}
+
+.close {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: none;
+}
+
+.close img {
+  width: 12px;
+  height: 12px;
+}
+
+.search-box.active .close {
+  display: block;
+}
+
+/* Login/Register Buttons */
+.register, .login {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+.register {
+  background: transparent;
+  color: #be1128;
+  border: 1px solid #be1128;
+}
+
+.register:hover {
+  background: #be1128;
+  color: white;
+}
+
+.login {
+  background: #be1128;
+  color: white;
+}
+
+.login:hover {
+  background: #a00e20;
+}
+
+.register p, .login p {
+  margin: 0;
+}
+
+/* Language Dropdown */
+.dropdown {
+  position: relative;
+  margin-left: 15px;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown-toggle img {
+  width: 24px;
+  height: auto;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 120px;
+  z-index: 1001;
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+  display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 0;
+}
+
+.flag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.flag:hover {
+  background-color: #f5f5f5;
+}
+
+.flag img {
+  width: 20px;
+  height: auto;
+}
+
+.flag span {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Mobile Menu */
+#nav-toggle {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  z-index: 9999;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+#nav-toggle.active {
+  left: 0;
+}
+
+.nav-toggle {
+  padding: 20px;
+}
+
+.side-navigation-wrap {
+  margin-top: 30px;
+}
+
+.side-navigation {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.side-navigation li {
+  border-bottom: 1px solid #eee;
+}
+
+.accordion-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.accordion-title a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.accordion-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 15px 20px;
+}
+
+.accordion-content a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 0;
+  display: block;
+}
+
+.copy-right {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .btn-toggle {
+    display: flex;
+  }
+  
+  .navbar-nav {
+    display: none;
+  }
+  
+  .search-box {
+    display: none;
+  }
+  
+  .register, .login {
+    display: none;
+  }
+  
+  .dropdown {
+    display: none;
+  }
+  
+  .nav-full {
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,547 @@
+/* HDBank ChatBot Styles */
+
+/* Floating Chat Button */
+.hdbank-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(190, 17, 40, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  color: white;
+}
+
+.hdbank-chat-button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 16px 48px rgba(190, 17, 40, 0.35);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.hdbank-chat-button.has-notification {
+  animation: bounce 2s infinite;
+}
+
+.hdbank-notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: #ffd700;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+
+/* Chat Window */
+.hdbank-chat-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 380px;
+  height: 550px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(190, 17, 40, 0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%) scale(0.8);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow: hidden;
+  border: 2px solid rgba(190, 17, 40, 0.1);
+}
+
+.hdbank-chat-window.open {
+  transform: translateY(-90px) scale(1);
+  opacity: 1;
+}
+
+/* Chat Header */
+.hdbank-chat-header {
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.hdbank-chat-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hdbank-avatar, .hdbank-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+}
+
+.hdbank-chat-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.hdbank-chat-status {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.hdbank-chat-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hdbank-change-personality {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.hdbank-change-personality:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hdbank-close-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.hdbank-close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Personality Selection */
+.hdbank-personality-selection {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hdbank-personality-list {
+  flex: 1;
+  padding: 24px 20px 20px;
+  overflow-y: auto;
+}
+
+.hdbank-personality-list h3 {
+  margin: 0 0 24px 0;
+  color: #333;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+  position: relative;
+}
+
+.hdbank-personality-list h3::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #be1128, #d4234a);
+  border-radius: 2px;
+}
+
+.hdbank-personality-card {
+  width: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #fdfeff 100%);
+  border: 2px solid #f0f0f0;
+  border-left: 4px solid #be1128;
+  border-radius: 16px;
+  padding: 18px 16px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hdbank-personality-card:hover {
+  border-color: #be1128;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(190, 17, 40, 0.15);
+  background: linear-gradient(135deg, #ffffff 0%, #fef7f8 100%);
+}
+
+.hdbank-personality-card:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(190, 17, 40, 0.02) 0%, rgba(212, 35, 74, 0.02) 100%);
+  pointer-events: none;
+}
+
+.hdbank-personality-emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.hdbank-personality-content {
+  flex: 1;
+  text-align: left;
+}
+
+.hdbank-personality-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.hdbank-personality-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Chat Transcript */
+.hdbank-chat-transcript {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.hdbank-chat-message {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+.hdbank-chat-message.user {
+  align-items: flex-end;
+}
+
+.hdbank-chat-message.assistant {
+  align-items: flex-start;
+}
+
+.hdbank-chat-message.user div {
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 18px 18px 4px 18px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.hdbank-chat-message.assistant div {
+  background: white;
+  color: #333;
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
+  max-width: 85%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(190, 17, 40, 0.1);
+}
+
+.hdbank-chat-message.short div {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.hdbank-chat-message.long div {
+  padding: 16px 18px;
+  line-height: 1.6;
+}
+
+/* Typing indicator */
+.hdbank-chat-message div[data-typing="true"] {
+  position: relative;
+}
+
+.hdbank-chat-message div[data-typing="true"]:after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 12px;
+  border-right: 2px solid;
+  animation: typingCursor 1s infinite;
+  margin-left: 2px;
+}
+
+/* Message formatting */
+.hdbank-chat-message .list-item {
+  margin: 8px 0;
+  padding: 4px 0;
+}
+
+.hdbank-chat-message .bullet-item {
+  margin: 4px 0;
+  padding-left: 8px;
+}
+
+.hdbank-chat-message p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.hdbank-chat-message strong {
+  font-weight: 600;
+  color: #be1128;
+}
+
+/* Chat Input Area */
+.hdbank-chat-input-area {
+  display: flex;
+  padding: 16px 20px;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.hdbank-chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 24px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.hdbank-chat-input:focus {
+  border-color: #be1128;
+  box-shadow: 0 0 0 3px rgba(190, 17, 40, 0.1);
+}
+
+.hdbank-chat-input:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.hdbank-send-button {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #be1128, #d4234a);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.hdbank-send-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(190, 17, 40, 0.3);
+}
+
+.hdbank-send-button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Chat Footer */
+.hdbank-chat-footer {
+  padding: 8px 20px;
+  background: #f8f9fa;
+  color: #6b7280;
+  font-size: 11px;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.connection-status {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.connection-status.checking {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.connection-status.connected {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.connection-status.failed {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingCursor {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hdbank-chat-window {
+    width: calc(100vw - 20px);
+    height: calc(100vh - 40px);
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .hdbank-chat-window.open {
+    transform: translateY(-10px) scale(1);
+  }
+  
+  .hdbank-chat-button {
+    bottom: 15px;
+    right: 15px;
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hdbank-chat-window {
+    width: 100vw;
+    height: 100vh;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+
+  .hdbank-chat-window.open {
+    transform: translateY(0) scale(1);
+  }
+
+  .hdbank-personality-list {
+    padding: 15px;
+  }
+
+  .hdbank-personality-card {
+    padding: 12px;
+  }
+
+  .hdbank-chat-transcript {
+    padding: 15px;
+  }
+
+  .hdbank-chat-input-area {
+    padding: 12px 15px;
+  }
+}
+
+/* Scrollbar Styling */
+.hdbank-chat-transcript::-webkit-scrollbar,
+.hdbank-personality-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hdbank-chat-transcript::-webkit-scrollbar-track,
+.hdbank-personality-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.hdbank-chat-transcript::-webkit-scrollbar-thumb,
+.hdbank-personality-list::-webkit-scrollbar-thumb {
+  background: #be1128;
+  border-radius: 3px;
+}
+
+.hdbank-chat-transcript::-webkit-scrollbar-thumb:hover,
+.hdbank-personality-list::-webkit-scrollbar-thumb:hover {
+  background: #d4234a;
+}
