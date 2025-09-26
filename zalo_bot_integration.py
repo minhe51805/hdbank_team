@@ -17,7 +17,7 @@ import logging
 import time
 
 # Zalo Bot Configuration
-ZALO_BOT_TOKEN = "23552880447759231:OTVNZPZVefKdaCgBtVBDAqJzOqwLHYKSSvjgEKyqIiOccBRjogKNLFhIIUwQxcwa"
+ZALO_BOT_TOKEN = "KeyChatbot"
 ZALO_API_BASE = "https://bot-api.zapps.me/bot"
 CASHYBEAR_API_BASE = "http://127.0.0.1:8010"
 
